@@ -1,7 +1,5 @@
-export const createEventsListTemplate = () => {
-    return (
-      `<ul class="trip-events__list">
+export const createEventsListTemplate = () => (
+  `<ul class="trip-events__list">
       </ul>`
-    );
-  };
-  
+);
+
