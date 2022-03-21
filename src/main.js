@@ -1,31 +1,34 @@
-import {createEventEditTemplate} from './view/event-edit-view.js';
-import {createTripFiltersTemplate} from './view/trip-filters-view';
+import {renderTemplate, RenderPosition} from './render.js';
+import {createEventAddTemplate} from './view/event-add-view';
+import {createTripFiltersTemplate} from './view/trip-filters-view.js';
 import {createTripInfoTemplate} from './view/trip-info-view.js';
 import {createTripSortTemplate} from './view/trip-sort-view.js';
 import {createTripTabsTemplate} from './view/trip-tabs-view.js';
+//import {createEventEditTemplate} from './view/event-edit-view';
 import {createEventsListTemplate} from './view/events-list-view.js';
 import {createWaypointTemplate} from './view/waypoint-view.js';
-import {renderTemplate, RenderPosition} from './render.js';
+import {generatePoint} from './mock/point';
 
-const WAYPOINT_COUNT = 3;
+const POINT_COUNT = 15;
+const points = Array.from({length: POINT_COUNT}, generatePoint);
 
 const siteTripMainElement = document.querySelector('.trip-main');
-const siteTripControlsElement = siteTripMainElement.querySelector('.trip-controls');
-const siteTripControlsFirstHeadingElement = siteTripControlsElement.querySelector('h2:first-of-type');
-const siteTripControlsLastHeadingElement = siteTripControlsElement.querySelector('h2:last-of-type');
+const TripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
+const TripControlsFiltersElement = document.querySelector('.trip-controls__filters');
+const TripEventsElement = document.querySelector('.trip-events');
+
 
 renderTemplate(siteTripMainElement, createTripInfoTemplate(), RenderPosition.AFTERBEGIN);
-renderTemplate(siteTripControlsFirstHeadingElement, createTripTabsTemplate(), RenderPosition.AFTEREND);
-renderTemplate(siteTripControlsLastHeadingElement, createTripFiltersTemplate(), RenderPosition.AFTEREND);
+renderTemplate(TripEventsElement, createEventsListTemplate(), RenderPosition.BEFOREEND);
 
-const siteTripEventsElement = document.querySelector('.trip-events');
+const TripEventsListElement = TripEventsElement.querySelector('.trip-events__list');
 
-renderTemplate(siteTripEventsElement, createTripSortTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(siteTripEventsElement, createEventsListTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(TripControlsNavigationElement, createTripTabsTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(TripControlsFiltersElement, createTripFiltersTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(TripEventsElement, createTripSortTemplate(), RenderPosition.AFTERBEGIN);
+//renderTemplate(TripEventsListElement, createEventEditTemplate(points[1]), RenderPosition.AFTERBEGIN);
+renderTemplate(TripEventsListElement, createEventAddTemplate(points[0]), RenderPosition.AFTERBEGIN);
 
-const eventsList = siteTripEventsElement.querySelector('.trip-events__list');
-
-renderTemplate(eventsList, createEventEditTemplate(), RenderPosition.BEFOREEND);
-for (let i = 0; i < WAYPOINT_COUNT; i++) {
-  renderTemplate(eventsList, createWaypointTemplate(), RenderPosition.BEFOREEND);
+for (let i = 1; i < POINT_COUNT; i++) {
+  renderTemplate(TripEventsListElement, createWaypointTemplate(points[i]), RenderPosition.BEFOREEND);
 }
