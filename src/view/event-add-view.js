@@ -4,21 +4,21 @@ import { wayPointTypes } from '../utils/waypointTypes';
 import { generateImages } from '../utils/functions';
 
 export const createEventAddTemplate = (point) => {
-  const {offers, description, cost } = point;
+  const {offers, description, price } = point;
   const waypointType = 'Taxi';
   const templateDatetime = dayjs().add(14, 'day').hour(10).minute(0).format('DD/MM/YY HH:mm');
 
   const createOffer = (offer) => {
-    const name = offer.name;
-    const price = offer.price;
-    const type = offer.type;
+    const offerName = offer.name;
+    const offerPrice = offer.price;
+    const offerType = offer.type;
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" >
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" >
                         <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${name}</span>
+                          <span class="event__offer-title">${offerName}</span>
                           &plus;&euro;&nbsp;
-                          <span class="event__offer-price">${price}</span>
+                          <span class="event__offer-price">${offerPrice}</span>
                         </label>
                       </div>
     `;
@@ -76,7 +76,7 @@ export const createEventAddTemplate = (point) => {
             <label class="event__label  event__type-output" for="event-destination-1">
             ${ fieldLabel }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
             <datalist id="destination-list-1">
             ${ optionsLocations }
             </datalist>
@@ -93,7 +93,7 @@ export const createEventAddTemplate = (point) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${cost}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
           </div>
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">Cancel</button>
