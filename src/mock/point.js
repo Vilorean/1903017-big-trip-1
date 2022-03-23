@@ -138,7 +138,7 @@ export const generatePoint = () => {
   const dates = generateBeginEndDates();
 
   return {
-    waypointType: generateType(),
+    wayPointType: generateType(),
     destination: generateDestination(),
     startDate: dates.start,
     endDate: dates.end,

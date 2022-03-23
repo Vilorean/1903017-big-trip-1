@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 export const createWaypointTemplate = (waypoint) => {
-  const {waypointType, destination, price, startDate, endDate, duration, offers, isFavorite} = waypoint;
+  const {wayPointType, destination, price, startDate, endDate, duration, offers, isFavorite} = waypoint;
   const startDay = dayjs(startDate).format('MMM D');
   const beginDate = dayjs(startDate).format('YYYY-MM-DD');
   const startTime = dayjs(startDate).format('HH:mm');
@@ -46,9 +46,9 @@ export const createWaypointTemplate = (waypoint) => {
       <div class="event">
         <time class="event__date" datetime="${beginDate}">${startDay}</time>
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${waypointType}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${wayPointType}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${waypointType} ${destination}</h3>
+        <h3 class="event__title">${wayPointType} ${destination}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime="${startDatetime}">${startTime}</time>
