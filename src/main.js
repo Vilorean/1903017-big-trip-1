@@ -4,7 +4,7 @@ import TripFiltersView from './view/trip-filters-view.js';
 //import {createTripInfoTemplate} from './view/trip-info-view.js';
 import TripSortView from './view/trip-sort-view.js';
 import TripTabsView from './view/trip-tabs-view.js';
-//import {createEventEditTemplate} from './view/event-edit-view';
+import EventEditView from './view/event-edit-view';
 import EventsListView from './view/events-list-view.js';
 import WaypointView from './view/waypoint-view.js';
 import {generatePoint} from './mock/point.js';
@@ -26,17 +26,17 @@ render(tripControlsNavigationElement, new TripTabsView().element, RenderPosition
 render(tripControlsFiltersElement, new TripFiltersView().element, RenderPosition.BEFOREEND);
 render(tripEventsElement, new TripSortView().element, RenderPosition.AFTERBEGIN);
 //renderTemplate(TripEventsListElement, createEventEditTemplate(points[1]), RenderPosition.AFTERBEGIN);
-//render(tripEventsListElement.element, new EventAddView(points[0]).element, RenderPosition.BEFOREEND);
+render(tripEventsListElement.element, new EventAddView(points[1]).element, RenderPosition.BEFOREEND);
 
 const renderEvent = (eventListElement, event) => {
   const waypointComponent = new WaypointView(event);
-  const eventAddComponent = new EventAddView(event);
+  const eventEditComponent = new EventEditView(event);
 
   const replaceItemToForm = () => {
-    eventListElement.replaceChild(eventAddComponent.element, waypointComponent.element);
+    eventListElement.replaceChild(eventEditComponent.element, waypointComponent.element);
   };
   const replaceFormToItem = () => {
-    eventListElement.replaceChild(waypointComponent.element, eventAddComponent.element);
+    eventListElement.replaceChild(waypointComponent.element, eventEditComponent.element);
   };
 
   const onEscKeyDown = (evt) => {
@@ -52,7 +52,7 @@ const renderEvent = (eventListElement, event) => {
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventAddComponent.element.querySelector('form').addEventListener('submit', (evt) => {
+  eventEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
     replaceFormToItem();
     document.removeEventListener('keydown', onEscKeyDown);
