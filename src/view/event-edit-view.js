@@ -1,27 +1,14 @@
 import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations';
 import { wayPointTypes } from '../utils/waypointTypes';
+import {createElement} from '../render';
 
-export const createEventEditTemplate = (point) => {
+const createEventEditTemplate = (point) => {
   const {waypointType, startDate, endDate, price, offers, description} = point;
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
 
-  const createListEventTypeItem = (types = wayPointTypes(), type) => {
-    const createType = (currentType) => {
-      const isChecked = currentType === type ? 'checked=""' : '';
-      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
-      return `<div class="event__type-item">
-                          <input id="event-type-${ currentType }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ currentType }" ${ isChecked }>
-                          <label class="event__type-label  event__type-label--${ currentType }" for="event-type-${ currentType }-1">${ label }</label>
-                        </div>`;
-    };
-    return types.map(createType).join('');
-  };
-
-  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
-
-  const createOffer = (offer) => {
+  const createOfferMarkup = (offer) => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
     const offerName = offer.name;
     const offerPrice = offer.cost;
@@ -38,7 +25,7 @@ export const createEventEditTemplate = (point) => {
     `;
   };
 
-  const createOfferList = (editedOffers) => {
+  const createOffersListMarkup = (editedOffers) => {
     if (editedOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                 <h3 class="event__section-title  event__section-title--offers">Offers</h3>${ editedOffers }
@@ -47,11 +34,26 @@ export const createEventEditTemplate = (point) => {
     return '';
   };
 
-  const listEventTypeItem = createListEventTypeItem(wayPointTypes(), waypointType);
-  const fieldLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
+  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
+  const createWaypointTypesMarkup = (types = wayPointTypes(), type) => {
+    const createType = (currentType) => {
+      const isChecked = currentType === type ? 'checked=""' : '';
+      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
+      return `<div class="event__type-item">
+                          <input id="event-type-${ currentType }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ currentType }" ${ isChecked }>
+                          <label class="event__type-label  event__type-label--${ currentType }" for="event-type-${ currentType }-1">${ label }</label>
+                        </div>`;
+    };
+    return types.map(createType).join('');
+  };
+
+
+  const editedOffersMarkup = offers.map(createOfferMarkup).join('');
+  const offersListMarkup = createOffersListMarkup(editedOffersMarkup);
   const optionsLocations = destinations().map(createOptionsLocations).join('');
-  const editOffers = offers.map(createOffer).join('');
-  const addableOffersList = createOfferList(editOffers);
+  const waypointTypesMarkup = createWaypointTypesMarkup(wayPointTypes(), waypointType);
+  const waypointTypeLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
+
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -64,13 +66,13 @@ export const createEventEditTemplate = (point) => {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-                        ${ listEventTypeItem }
+                        ${ waypointTypesMarkup }
                       </fieldset>
                     </div>
                   </div>
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                    ${ fieldLabel }
+                    ${ waypointTypeLabel }
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
                     <datalist id="destination-list-1">
@@ -98,7 +100,7 @@ export const createEventEditTemplate = (point) => {
                   </button>
                 </header>
                 <section class="event__details">
-                ${ addableOffersList }
+                ${ offersListMarkup }
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
@@ -107,3 +109,28 @@ export const createEventEditTemplate = (point) => {
               </form>
             </li>`;
 };
+
+export default class EventEditView {
+  #element = null;
+  #point = null;
+
+  constructor(event) {
+    this.#point = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEventEditTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

@@ -2,13 +2,14 @@ import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations.js';
 //import { wayPointTypes } from '../utils/waypointTypes';
 import { generateImages } from '../utils/functions';
+import {createElement} from '../render';
 
-export const createEventAddTemplate = (point) => {
+const createEventAddTemplate = (point) => {
   const {offers, description } = point;
   const waypointType = 'taxi';
   const templateDatetime = dayjs().add(14, 'day').hour(10).minute(0).format('DD/MM/YY HH:mm');
 
-  const createOffer = (offer) => {
+  const createOfferMarkup = (offer) => {
     const offerName = offer.name;
     const offerPrice = offer.price;
     const offerType = offer.type;
@@ -23,24 +24,21 @@ export const createEventAddTemplate = (point) => {
                       </div>
     `;
   };
-  const addableOfferElements = offers.map(createOffer).join('');
-  const createAddableOfferList = (addableOffers) => {
+
+  const createOffersListMarkup = (addableOffers) => {
     if (addableOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${addableOfferElements}
-                  </section>`;
+                    ${offers.map(createOfferMarkup).join('')}</section>`;
     }
     return '';
   };
 
   const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
-  const createImagesList= (photo) => (`<img className="event__photo" src="${photo}">`);
+  const createPhotoMarkup = (photo) => (`<img className="event__photo" src="${photo}">`);
 
-  const addableOfferList = createAddableOfferList(offers);
   const images = generateImages();
-  const imagesList = images.map(createImagesList).join('');
-  const optionsLocations = destinations().map(createOptionsLocations).join('');
+
 
   /*const createListEventTypeItem = (types =  wayPointTypes(), type) => {
     const createType = (currentType) => {
@@ -54,7 +52,13 @@ export const createEventAddTemplate = (point) => {
     return types.map(createType).join('');
   };*/
   //const listEventTypeItem = createListEventTypeItem(wayPointTypes(), waypointType);
-  const fieldLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
+
+  const addableOffersMarkup = createOffersListMarkup(offers);
+  const imagesList = images.map(createPhotoMarkup).join('');
+  const optionsLocations = destinations().map(createOptionsLocations).join('');
+  //const waypointTypesMarkup = createEventTypesMarkup(waypointTypes(), waypointType);
+  const waypointTypeLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
+
 
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -62,7 +66,7 @@ export const createEventAddTemplate = (point) => {
           <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/taxi.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         <div class="event__type-list">
@@ -109,7 +113,7 @@ export const createEventAddTemplate = (point) => {
           </div>
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-            ${ fieldLabel }
+            ${ waypointTypeLabel }
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
             <datalist id="destination-list-1">
@@ -133,9 +137,7 @@ export const createEventAddTemplate = (point) => {
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">Cancel</button>
         </header>
-        <section class="event__details">
-        ${addableOfferList}
-          <section class="event__section  event__section--destination">
+        <section class="event__details">${addableOffersMarkup}<section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">Destination</h3>
             <p class="event__destination-description">${description}</p>
             <div class="event__photos-container">
@@ -148,3 +150,28 @@ export const createEventAddTemplate = (point) => {
       </form>
     </li>`;
 };
+
+export default class EventAddView {
+  #element = null;
+  #point = null;
+
+  constructor(event) {
+    this.#point = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEventAddTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
