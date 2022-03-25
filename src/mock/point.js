@@ -66,62 +66,75 @@ const generateOffers = () => {
       name: 'Infotainment system',
       price: 50,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'flight'
     },
     {
       name: 'Wake up at a certain time',
       price: 140,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'train'
     },
     {
       name: 'Book a taxi at the arrival point',
       price: 110,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'flight'
     },
     {
       name: 'Add luggage',
       price: 30,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'luggage'
     },
     {
       name: 'Switch to comfort class',
       price: 100,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'flight'
     },
     {
       name: 'Add meal',
       price: 15,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'meal'
     },
     {
       name: 'Choose seats',
       price: 5,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'flight'
     },
     {
       name: 'With air conditioning',
       price: 40,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'car'
     },
     {
       name: 'Choose live music',
       price: 200,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'restaurant'
     },
     {
       name: 'Add breakfast',
       price: 40,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'meal'
     },
     {
       name: 'Lunch in city',
       price: 55,
       isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'meal'
     },
   ];
+
   let count = getRandomInteger(0, 5);
   let len = offers.length;
   const result = new Array(count);
   const taken = new Array(len);
+
   if (count > len)
   {
     throw new RangeError('getRandom: more elements taken than available');
@@ -138,7 +151,7 @@ export const generatePoint = () => {
   const dates = generateBeginEndDates();
 
   return {
-    wayPointType: generateType(),
+    waypointType: generateType(),
     destination: generateDestination(),
     startDate: dates.start,
     endDate: dates.end,

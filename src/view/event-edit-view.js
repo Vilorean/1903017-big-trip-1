@@ -11,7 +11,7 @@ const createEventEditTemplate = (point) => {
   const createOfferMarkup = (offer) => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
     const offerName = offer.name;
-    const offerPrice = offer.cost;
+    const offerPrice = offer.price;
     const offerType = offer.type;
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
@@ -25,7 +25,7 @@ const createEventEditTemplate = (point) => {
     `;
   };
 
-  const createOffersListMarkup = (editedOffers) => {
+  const createOfferListMarkup = (editedOffers) => {
     if (editedOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                 <h3 class="event__section-title  event__section-title--offers">Offers</h3>${ editedOffers }
@@ -34,7 +34,6 @@ const createEventEditTemplate = (point) => {
     return '';
   };
 
-  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
   const createWaypointTypesMarkup = (types = wayPointTypes(), type) => {
     const createType = (currentType) => {
       const isChecked = currentType === type ? 'checked=""' : '';
@@ -47,9 +46,10 @@ const createEventEditTemplate = (point) => {
     return types.map(createType).join('');
   };
 
+  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
 
   const editedOffersMarkup = offers.map(createOfferMarkup).join('');
-  const offersListMarkup = createOffersListMarkup(editedOffersMarkup);
+  const offersListMarkup = createOfferListMarkup(editedOffersMarkup);
   const optionsLocations = destinations().map(createOptionsLocations).join('');
   const waypointTypesMarkup = createWaypointTypesMarkup(wayPointTypes(), waypointType);
   const waypointTypeLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
@@ -114,8 +114,8 @@ export default class EventEditView {
   #element = null;
   #point = null;
 
-  constructor(event) {
-    this.#point = event;
+  constructor(point) {
+    this.#point = point;
   }
 
   get element() {
