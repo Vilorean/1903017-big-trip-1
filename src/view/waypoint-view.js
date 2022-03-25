@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
-export const createWaypointTemplate = (waypoint) => {
+import {createElement} from '../render.js';
+
+const createWaypointTemplate = (waypoint) => {
   const {wayPointType, destination, price, startDate, endDate, duration, offers, isFavorite} = waypoint;
   const startDay = dayjs(startDate).format('MMM D');
   const beginDate = dayjs(startDate).format('YYYY-MM-DD');
@@ -8,25 +10,8 @@ export const createWaypointTemplate = (waypoint) => {
   const endTime = dayjs(endDate).format('HH:mm');
   const endDatetime = dayjs(endDate).format('YYYY-MM-DDTHH:mm');
 
-  const getDurationString = (period) => {
-    const result = [];
-    if (period.days !== 0) {
-      result[0] = String(period.days).padStart(2,'0');
-      result[0] += 'D';
-    }
-    if (period.hours !== 0) {
-      result[1] = String(period.hours).padStart(2,'0');
-      result[1] += 'H';
-    }
-    if (period.minutes !== 0) {
-      result[2] = String(period.minutes).padStart(2,'0');
-      result[2] += 'M';
-    }
-    return result.join(' ');
-  };
-  const durationString = getDurationString(duration);
-
-  const createListOffers = (offer) => {
+  const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
+  const createOfferMarkup = (offer) => {
     if (offer.isChosen) {
       const offerName = offer.name;
       const offerPrice = offer.price;
@@ -38,11 +23,24 @@ export const createWaypointTemplate = (waypoint) => {
     }
   };
 
-  const listOffers = offers.map(createListOffers).join('');
-  const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
+  const getDuration = (period) => {
+    const timeDifference = [];
+    if (period.days !== 0) {
+      timeDifference[0] = `${String(period.days).padStart(2,'0')}D`;
+    }
+    if (period.hours !== 0) {
+      timeDifference[1] = `${String(period.hours).padStart(2,'0')}H`;
+    }
+    if (period.minutes !== 0) {
+      timeDifference[2] = `${String(period.minutes).padStart(2,'0')}M`;
+    }
+    return timeDifference.join(' ');
+  };
+  const OffersMarkup = offers.map(createOfferMarkup).join('');
+  const durationText = getDuration(duration);
+
 
   return `<li class="trip-events__item">
-  <li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="${beginDate}">${startDay}</time>
         <div class="event__type">
@@ -55,13 +53,13 @@ export const createWaypointTemplate = (waypoint) => {
             &mdash;
             <time class="event__end-time" datetime="${endDatetime}">${endTime}</time>
           </p>
-          <p class="event__duration">${durationString}</p>
+          <p class="event__duration">${durationText}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${price}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-        <ul class="event__selected-offers">${listOffers}</ul>
+        <ul class="event__selected-offers">${OffersMarkup}</ul>
                 <button class="event__favorite-btn${isFavoriteClass}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -74,3 +72,28 @@ export const createWaypointTemplate = (waypoint) => {
       </div>
     </li>`;
 };
+
+export default class WaypointView {
+  #element = null;
+  #point = null;
+
+  constructor(event) {
+    this.#point = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createWaypointTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
