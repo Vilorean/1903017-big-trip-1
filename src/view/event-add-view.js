@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations.js';
-import { wayPointTypes } from '../utils/waypointTypes';
-import { generateImages } from '../utils/functions';
-import {createElement} from '../render';
+import { wayPointTypes } from '../utils/waypointTypes.js';
+import { generateImages } from '../utils/functions.js';
+import {createElement} from '../render.js';
 
 const createEventAddTemplate = (point) => {
   const {offers, description } = point;
   const waypointType = 'taxi';
-  const templateDatetime = dayjs().add(14, 'day').hour(10).minute(0).format('DD/MM/YY HH:mm');
+  const templateDatetime = dayjs().add(14, 'day').hour(0).minute(0).format('DD/MM/YY HH:mm');
 
   const createOfferMarkup = (offer) => {
     const offerName = offer.name;
@@ -25,7 +25,7 @@ const createEventAddTemplate = (point) => {
     `;
   };
 
-  const createOffersListMarkup = (addableOffers) => {
+  const createOfferListMarkup = (addableOffers) => {
     if (addableOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -34,11 +34,7 @@ const createEventAddTemplate = (point) => {
     return '';
   };
 
-  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
-  const createPhotoMarkup = (photo) => (`<img className="event__photo" src="${photo}">`);
-
   const images = generateImages();
-
 
   const createWaypointTypesMarkup = (types =  wayPointTypes(), chosenWaypointType) => {
     const createType = (currentType) => {
@@ -51,12 +47,15 @@ const createEventAddTemplate = (point) => {
     };
     return types.map(createType).join('');
   };
-  const waypointTypesMarkup = createWaypointTypesMarkup(wayPointTypes(), waypointType);
 
-  const addableOffersMarkup = createOffersListMarkup(offers);
+  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
+
+  const createPhotoMarkup = (photo) => (`<img className="event__photo" src="${photo}">`);
+
+  const waypointTypesMarkup = createWaypointTypesMarkup(wayPointTypes(), waypointType);
+  const addableOffersMarkup = createOfferListMarkup(offers);
   const imagesList = images.map(createPhotoMarkup).join('');
   const optionsLocations = destinations().map(createOptionsLocations).join('');
-  //const waypointTypesMarkup = createEventTypesMarkup(waypointTypes(), waypointType);
   const waypointTypeLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
 
 
@@ -120,8 +119,8 @@ export default class EventAddView {
   #element = null;
   #point = null;
 
-  constructor(event) {
-    this.#point = event;
+  constructor(point) {
+    this.#point = point;
   }
 
   get element() {
