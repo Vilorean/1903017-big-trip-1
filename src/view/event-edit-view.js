@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations';
 import { wayPointTypes } from '../utils/waypointTypes';
-import {createElement} from '../render';
+import AbstractView from './abstract-view';
 
 const createEventEditTemplate = (point) => {
   const {waypointType, startDate, endDate, price, offers, description, destination} = point;
@@ -110,27 +110,15 @@ const createEventEditTemplate = (point) => {
             </li>`;
 };
 
-export default class EventEditView {
-  #element = null;
+export default class EventEditView extends AbstractView {
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createEventEditTemplate(this.#point);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

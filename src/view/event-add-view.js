@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations.js';
 import { wayPointTypes } from '../utils/waypointTypes.js';
 import { generateImages } from '../utils/functions.js';
-import {createElement} from '../render.js';
+import AbstractView from './abstract-view';
 
 const createEventAddTemplate = (point) => {
   const {offers, description } = point;
@@ -115,27 +115,15 @@ const createEventAddTemplate = (point) => {
     </li>`;
 };
 
-export default class EventAddView {
-  #element = null;
+export default class EventAddView extends AbstractView {
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createEventAddTemplate(this.#point);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
