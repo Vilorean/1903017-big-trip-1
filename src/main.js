@@ -33,15 +33,15 @@ if (points.length === 0) {
   render(tripEventsListElement.element, new EventAddView(points[0]).element, RenderPosition.BEFOREEND);
 }
 
-const renderEvent = (eventListElement, event) => {
-  const waypointComponent = new WaypointView(event);
-  const eventEditComponent = new EventEditView(event);
+const renderPoint = (pointListElement, point) => {
+  const waypointComponent = new WaypointView(point);
+  const eventEditComponent = new EventEditView(point);
 
   const replaceItemToForm = () => {
-    eventListElement.replaceChild(eventEditComponent.element, waypointComponent.element);
+    pointListElement.replaceChild(eventEditComponent.element, waypointComponent.element);
   };
   const replaceFormToItem = () => {
-    eventListElement.replaceChild(waypointComponent.element, eventEditComponent.element);
+    pointListElement.replaceChild(waypointComponent.element, eventEditComponent.element);
   };
 
   const onEscKeyDown = (evt) => {
@@ -52,24 +52,24 @@ const renderEvent = (eventListElement, event) => {
     }
   };
 
-  waypointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  waypointComponent.setEditClickHandler(() => {
     replaceItemToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  eventEditComponent.setRollupClickHandler(() => {
     replaceFormToItem();
+    document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  eventEditComponent.setFormSubmit(() => {
     replaceFormToItem();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(eventListElement, waypointComponent.element, RenderPosition.BEFOREEND);
+  render(pointListElement, waypointComponent.element, RenderPosition.BEFOREEND);
 };
 
 for (let i = 1; i < POINT_COUNT; i++) {
-  renderEvent(tripEventsListElement.element, points[i]);
+  renderPoint(tripEventsListElement.element, points[i]);
 }
