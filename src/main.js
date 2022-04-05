@@ -10,7 +10,7 @@ import WaypointView from './view/waypoint-view.js';
 import {generatePoint} from './mock/point.js';
 import NoTripPointView from './view/no-trip-point-view';
 
-const POINT_COUNT = 15;
+const POINT_COUNT = 14;
 
 const points = Array.from({length: POINT_COUNT}, generatePoint);
 

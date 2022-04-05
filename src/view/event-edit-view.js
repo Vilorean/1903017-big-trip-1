@@ -2,55 +2,16 @@ import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations';
 import { wayPointTypes } from '../utils/waypointTypes';
 import AbstractView from './abstract-view';
+import { createOffersSegmentMarkup, createWaypointTypesMarkup } from '../utils/forms.js';
 
 const createEventEditTemplate = (point) => {
   const {waypointType, startDate, endDate, price, offers, description, destination} = point;
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
 
-  const createOfferMarkup = (offer) => {
-    const isChecked = offer.isChosen ? ' checked=""' : '';
-    const offerName = offer.name;
-    const offerPrice = offer.price;
-    const offerType = offer.type;
-    return `<div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ offerType }-1" type="checkbox" name="event-offer-${ offerType }"${isChecked}>
-                        <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${offerName}</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">${offerPrice }</span>
-                        </label>
-                      </div>
-    `;
-  };
-
-  const createOfferListMarkup = (editedOffers) => {
-    if (editedOffers.length !== 0){
-      return `<section class="event__section  event__section--offers">
-                <h3 class="event__section-title  event__section-title--offers">Offers</h3>${ editedOffers }
-              </section>`;
-    }
-    return '';
-  };
-
-  const createWaypointTypesMarkup = (types = wayPointTypes(), type) => {
-    const createType = (currentType) => {
-      const isChecked = currentType === type ? 'checked=""' : '';
-      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
-      return `<div class="event__type-item">
-                          <input id="event-type-${ currentType }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ currentType }" ${ isChecked }>
-                          <label class="event__type-label  event__type-label--${ currentType }" for="event-type-${ currentType }-1">${ label }</label>
-                        </div>`;
-    };
-    return types.map(createType).join('');
-  };
-
-  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
-
-  const editedOffersMarkup = offers.map(createOfferMarkup).join('');
-  const offersListMarkup = createOfferListMarkup(editedOffersMarkup);
-  const optionsLocations = destinations().map(createOptionsLocations).join('');
+  const editedOffersMarkup = createOffersSegmentMarkup(offers);
+  //const offersListMarkup = createOfferListMarkup(editedOffersMarkup);
+  const optionsLocations = destinations().map((x) => (`<option value="${x}"></option>`)).join('');
   const waypointTypesMarkup = createWaypointTypesMarkup(wayPointTypes(), waypointType);
   const waypointTypeLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
 
@@ -100,7 +61,7 @@ const createEventEditTemplate = (point) => {
                   </button>
                 </header>
                 <section class="event__details">
-                ${ offersListMarkup }
+                ${ editedOffersMarkup }
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
