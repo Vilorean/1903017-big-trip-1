@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations.js';
 import { wayPointTypes } from '../utils/waypointTypes.js';
 import { generateImages } from '../utils/functions.js';
-import AbstractView from './abstract-view';
+import AbstractView from './abstract-view.js';
 
 const createEventAddTemplate = (point) => {
   const {offers, description } = point;

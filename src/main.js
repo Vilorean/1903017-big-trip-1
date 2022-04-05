@@ -18,19 +18,19 @@ const siteTripMainElement = document.querySelector('.trip-main');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 const tripEventsElement = document.querySelector('.trip-events');
-const tripEventsListElement = new EventsListView;
+const tripEventsListElement = new EventsListView();
 
 //render(siteTripMainElement, new TripInfoView().element, RenderPosition.AFTERBEGIN);
-render(tripControlsNavigationElement, new TripTabsView().element, RenderPosition.BEFOREEND);
-render(tripControlsFiltersElement, new TripFiltersView().element, RenderPosition.BEFOREEND);
+render(tripControlsNavigationElement, new TripTabsView(), RenderPosition.BEFOREEND);
+render(tripControlsFiltersElement, new TripFiltersView(), RenderPosition.BEFOREEND);
 
 if (points.length === 0) {
-  render(tripEventsElement, new NoTripPointView().element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, new NoTripPointView(), RenderPosition.BEFOREEND);
 } else {
-  render(siteTripMainElement, new TripInfoView().element, RenderPosition.AFTERBEGIN);
-  render(tripEventsElement, tripEventsListElement.element, RenderPosition.BEFOREEND);
-  render(tripEventsElement, new TripSortView().element, RenderPosition.AFTERBEGIN);
-  render(tripEventsListElement.element, new EventAddView(points[0]).element, RenderPosition.BEFOREEND);
+  render(siteTripMainElement, new TripInfoView(), RenderPosition.AFTERBEGIN);
+  render(tripEventsElement, tripEventsListElement, RenderPosition.BEFOREEND);
+  render(tripEventsElement, new TripSortView(), RenderPosition.AFTERBEGIN);
+  render(tripEventsListElement.element, new EventAddView(points[0]), RenderPosition.BEFOREEND);
 }
 
 const renderPoint = (pointListElement, point) => {
@@ -67,7 +67,7 @@ const renderPoint = (pointListElement, point) => {
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(pointListElement, waypointComponent.element, RenderPosition.BEFOREEND);
+  render(pointListElement, waypointComponent, RenderPosition.BEFOREEND);
 };
 
 for (let i = 1; i < POINT_COUNT; i++) {

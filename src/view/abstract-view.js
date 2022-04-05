@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import { createElement } from '../render';
 
 export default class AbstractView {
   #element = null;
