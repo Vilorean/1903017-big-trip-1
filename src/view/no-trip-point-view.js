@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from './abstract-view';
 
 const createNoTripPointTemplate = () => (
   `<p class="trip-events__msg">
@@ -6,22 +6,8 @@ const createNoTripPointTemplate = () => (
     </p>`
 );
 
-export default class NoTripPointView {
-  #element = null;
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
+export default class NoTripPointView extends AbstractView {
   get template() {
     return createNoTripPointTemplate();
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
