@@ -4,6 +4,7 @@ import NoTripPointView from '../view/no-trip-point-view';
 import TripSortView from '../view/trip-sort-view';
 //import EventAddView from '../view/event-add-view';
 import PointPresenter from './point-presenter';
+import { updateItem } from '../utils/common';
 
 export default class TripPresenter {
     #mainElement = null;
@@ -15,11 +16,13 @@ export default class TripPresenter {
 
   #points = [];
 
-  constructor(mainElement) {
-    this.#mainElement = mainElement;
+ #pointPresenter = new Map();
 
-    this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
-  }
+ constructor(mainElement) {
+   this.#mainElement = mainElement;
+
+   this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
+ }
 
   init = (points) => {
     this.#points = [...points];
@@ -34,13 +37,23 @@ export default class TripPresenter {
     render(this.#tripPointsElement, this.#tripEventsListElement, RenderPosition.BEFOREEND);
   }
 
+  #handleModeChange = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.resetView());
+  }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+  }
+
   #renderSort = () => {
     render(this.#tripPointsElement, this.#tripSortComponent, RenderPosition.AFTERBEGIN);
   }
 
   #renderTripEvent = (tripPoint) => {
-    const pointPresenter = new PointPresenter(this.#tripEventsListElement);
+    const pointPresenter = new PointPresenter(this.#tripEventsListElement, this.#handlePointChange, this.#handleModeChange);
     pointPresenter.init(tripPoint);
+    this.#pointPresenter.set(tripPoint.id, pointPresenter);
   };
 
   #renderTripEventsList = () => {
@@ -60,4 +73,10 @@ export default class TripPresenter {
       this.#renderTripEventsList();
     }
   }
+
+  #clearTaskList = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
+  }
+
 }
