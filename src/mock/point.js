@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { wayPointTypes } from '../utils/waypointTypes';
+import { offersList } from '../utils/offers';
 import { destinations } from '../utils/destinations';
-import { descriptions } from '../utils/descriptions';
-import { generateImages } from '../utils/functions';
+//import { descriptions } from '../utils/descriptions';
+//import { generateImages } from '../utils/functions';
 import { nanoid } from 'nanoid';
 
 const getRandomInteger = (a = 0, b = 1) => {
@@ -12,37 +12,33 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const generateType = () => {
-  const types = wayPointTypes();
-  const randomIndex = getRandomInteger(0, types.length - 1);
-  return types[randomIndex];
-};
+const generatePrice = () => getRandomInteger(1, 100) * 10;
 
-const generateDestination = () => {
+/*const generateDestination = () => {
   const dest = destinations();
   const randomIndex = getRandomInteger(0, dest.length - 1);
   return dest[randomIndex];
-};
+};*/
 
-const generateBeginEndDates = () => {
+const generateFromToDates = () => {
   const maxGap = 14;
-  const startDate = dayjs()
+  const fromDate = dayjs()
     .add(getRandomInteger(-maxGap, maxGap), 'day')
     .add(getRandomInteger(-maxGap, maxGap), 'hour')
     .add(getRandomInteger(-maxGap, maxGap), 'minute');
-  const endDate = startDate
+  const toDate = fromDate
     .clone()
     .add(getRandomInteger(0, 14), 'day')
     .add(getRandomInteger(0, 59), 'hour')
     .add(getRandomInteger(0, 59), 'minute');
 
   return {
-    start: startDate.toDate(),
-    end: endDate.toDate()
+    from: fromDate.toISOString(),
+    to: toDate.toISOString()
   };
 };
 
-const countDuration = (start, end) => {
+/*const countDuration = (start, end) => {
   const period = new Date(end - start);
   return {
     days: period.getDate() - 1,
@@ -50,18 +46,15 @@ const countDuration = (start, end) => {
     minutes: period.getMinutes(),
   };
 
-};
+};*/
 
-export const generateDescription = () => {
+/*export const generateDescription = () => {
   const description = descriptions();
   const randomIndex = getRandomInteger(0, description.length - 1);
   return description[randomIndex];
-};
+};*/
 
-
-const generatePrice = () => getRandomInteger(1, 100) * 10;
-
-const generateOffers = () => {
+/*const generateOffers = () => {
   const offers = [
     {
       name: 'Infotainment system',
@@ -147,13 +140,15 @@ const generateOffers = () => {
   }
   return result;
 };
-
+*/
 export const generatePoint = () => {
-  const dates = generateBeginEndDates();
+  const dates = generateFromToDates();
+  const destinationArray = destinations();
+  const offerArray = offersList();
 
-  return {
+  /*return {
     id: nanoid(),
-    waypointType: generateType(),
+    //waypointType: generateType(),
     destination: generateDestination(),
     startDate: dates.start,
     endDate: dates.end,
@@ -161,8 +156,23 @@ export const generatePoint = () => {
     description: generateDescription(),
     images: generateImages(),
     price: generatePrice(),
-    offers: generateOffers(),
+    //offers: generateOffers(),
     isFavorite: Boolean(getRandomInteger(0,1)),
+    'offers': offersList(),
     isBeingEdited: false
+  };*/
+
+  return {
+    basePrice: generatePrice(),
+    dateFrom: dates.from,
+    dateTo: dates.to,
+    //'destination': generateDestination(),
+    //images: generateImages(),
+    //description: generateDescription(),
+    destination: destinationArray[getRandomInteger(0,destinationArray.length-1)],
+    id: nanoid(),
+    isFavorite: Boolean(getRandomInteger(0,1)),
+    offersList: offerArray,
+    type: offerArray[getRandomInteger(0,offerArray.length-1)].type
   };
 };
