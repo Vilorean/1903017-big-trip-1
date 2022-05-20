@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { destinations } from '../utils/destinations.js';
-import { wayPointTypes } from '../utils/waypointTypes.js';
+import { offersList } from '../utils/offers.js';
+//import { wayPointTypes } from '../utils/waypointTypes.js';
 import { generateImages } from '../utils/functions.js';
 import AbstractView from './abstract-view.js';
 import { createOffersSegmentMarkup, createWaypointTypesMarkup } from '../utils/forms.js';
@@ -14,7 +15,7 @@ const createEventAddTemplate = (point) => {
   const images = generateImages();
 
 
-  const waypointTypesMarkup = createWaypointTypesMarkup(wayPointTypes(), waypointType);
+  const waypointTypesMarkup = createWaypointTypesMarkup(offersList(), waypointType);
   const addableOffersMarkup = createOffersSegmentMarkup(offers);
   const imagesList = images.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
   const optionsLocations = destinations().map((x) => (`<option value="${x}"></option>`)).join('');
