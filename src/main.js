@@ -4,6 +4,7 @@ import TripInfoView from './view/trip-info-view.js';
 import TripTabsView from './view/trip-tabs-view.js';
 import {generatePoint} from './mock/point.js';
 import TripPresenter from './presenter/trip-presenter';
+import PointsModel from './model/points-model.js';
 
 const POINT_COUNT = 14;
 
@@ -14,9 +15,12 @@ const siteTripMainElement = document.querySelector('.trip-main');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 
+const pointsModel = new PointsModel();
+pointsModel.points = points;
+
 render(siteTripMainElement, new TripInfoView().element, RenderPosition.AFTERBEGIN);
 render(tripControlsNavigationElement, new TripTabsView(), RenderPosition.BEFOREEND);
 render(tripControlsFiltersElement, new TripFiltersView(), RenderPosition.BEFOREEND);
 
-const tripPresenter = new TripPresenter(pageMainElement);
-tripPresenter.init(points);
+const tripPresenter = new TripPresenter(pageMainElement, pointsModel);
+tripPresenter.init();
