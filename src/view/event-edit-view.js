@@ -10,12 +10,12 @@ const createPointEditTemplate = (point) => {
 
   const {basePrice: price, destination, type} = point;
 
-  const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+  const waypointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-  const pointTypesMarkup = createWaypointTypesMarkup(offersList(), type);
+  const waypointTypesMarkup = createWaypointTypesMarkup(offersList(), type);
   const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
 
-  const photosMarkup = destination.pictures.map((x) => (`<img className="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
+  const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
 
   const editedOffersMarkup = createOffersSegmentMarkup(offersList(), type);
 
@@ -31,13 +31,13 @@ const createPointEditTemplate = (point) => {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-                        ${pointTypesMarkup}
+                        ${waypointTypesMarkup}
                       </fieldset>
                     </div>
                   </div>
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      ${pointTypeLabel}
+                      ${waypointTypeLabel}
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
                     <datalist id="destination-list-1">
