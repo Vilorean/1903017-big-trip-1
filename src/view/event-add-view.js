@@ -6,11 +6,12 @@ import SmartView from './smart-view.js';
 //import AbstractView from './abstract-view.js';
 import { createOffersSegmentMarkup, createWaypointTypesMarkup } from '../utils/forms.js';
 import flatpickr from 'flatpickr';
+import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createEventAddTemplate = (point) => {
-  const {destination, type} = point;
+  const {basePrice: price, destination, type} = point;
   const waypointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
   const waypointTypesMarkup = createWaypointTypesMarkup(offersList(), type);
@@ -49,7 +50,7 @@ const createEventAddTemplate = (point) => {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${waypointTypeLabel}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.name ? destinations.name : ''}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destination.name ? destination.name : '')}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       ${destinationOptions}
                     </datalist>
@@ -66,7 +67,7 @@ const createEventAddTemplate = (point) => {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(price ? price.toString() : '')}">
                   </div>
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
                   <button class="event__reset-btn" type="reset">Cancel</button>
@@ -156,8 +157,6 @@ export default class PointAddView extends SmartView {
   restoreHandlers = () => {
     this.#setInnerHandlers();
     this.#setDatepicker();
-    //ДРУГИЕ КНОПКИ
-    //this.setRollupClickHandler(this._callback.rollupClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
@@ -191,16 +190,6 @@ export default class PointAddView extends SmartView {
       basePrice: evt.target.value
     }, true);
   }
-
-  // setRollupClickHandler = (callback) => {
-  //   this._callback.rollupClick = callback;
-  //   this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
-  // }
-  //
-  // #rollupClickHandler = (evt) => {
-  //   evt.preventDefault();
-  //   this._callback.rollupClick();
-  // }
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
@@ -242,12 +231,10 @@ export default class PointAddView extends SmartView {
   }
 
   static parsePointToData = (point) => ({...point,
-    // В будущем здесь появится обработка Предложений (Offers).
   });
 
   static parseDataToPoint = (data) => {
     const point = {...data};
-    // В будущем здесь появится обработка Предложений (Offers).
 
     return point;
   }

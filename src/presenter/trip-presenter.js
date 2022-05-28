@@ -4,6 +4,7 @@ import NoTripPointView from '../view/no-trip-point-view.js';
 import TripSortView from '../view/trip-sort-view.js';
 //import EventAddView from '../view/event-add-view.js';
 import PointPresenter from './point-presenter.js';
+import PointNewPresenter from './point-new-presenter.js';
 import { filter } from '../utils/filter.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../utils/sort-consts.js';
 import { sortTaskByDay, sortTaskByDuration, sortTaskByPrice } from '../utils/sort-point.js';
@@ -20,6 +21,7 @@ export default class TripPresenter {
   #sortComponent = null;
 
   #pointPresenter = new Map();
+  #pointNewPresenter = null;
 
   #currentSortType = SortType.SORT_DAY;
   #filterType = FilterType.EVERYTHING;
@@ -31,6 +33,8 @@ export default class TripPresenter {
 
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripEventsListElement, this.#handleViewAction);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -56,6 +60,12 @@ export default class TripPresenter {
       this.#renderMain();
     }
 
+    createPoint = () => {
+      this.#currentSortType = SortType.SORT_DAY;
+      this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+      this.#pointNewPresenter.init();
+    }
+
   #renderNoTasks = () => {
     this.#noTripPointComponent = new NoTripPointView(this.#filterType);
     render(this.#tripPointsElement, this.#noTripPointComponent, RenderPosition.BEFOREEND);
@@ -66,6 +76,7 @@ export default class TripPresenter {
   }
 
   #handleModeChange = () => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   }
 
@@ -160,6 +171,7 @@ export default class TripPresenter {
   }
 
   #clearPointList = () => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
   }
