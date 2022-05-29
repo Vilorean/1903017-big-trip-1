@@ -1,6 +1,8 @@
 import WaypointView from '../view/waypoint-view';
 import EventEditView from '../view/event-edit-view';
 import { render, RenderPosition, replace, remove } from '../render';
+import { UserAction, UpdateType } from '../utils/sort-consts';
+import { isDatesEqual } from '../utils/common';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -38,6 +40,7 @@ export default class PointPresenter {
       this.#waypointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
       this.#eventEditComponent.setRollupClickHandler(this.#handleRollupClick);
       this.#eventEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
+      this.#eventEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
       if (prevWaypointComponent === null || prevEventEditComponent === null) {
         render(this.#tripPointsListElement, this.#waypointComponent, RenderPosition.BEFOREEND);
@@ -99,12 +102,33 @@ export default class PointPresenter {
     };
 
     #handleFavoriteClick = () => {
-      this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
+      this.#changeData(
+        UserAction.UPDATE_POINT,
+        UpdateType.MINOR,
+        {...this.#point, isFavorite: !this.#point.isFavorite}
+      );
     }
 
-      #handleFormSubmit = (tripPoint) => {
-        this.#changeData(tripPoint);
+      #handleFormSubmit = (update) => {
+        const isMinorUpdate =
+         !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+         !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+         (this.#point.basePrice !== update.basePrice);
+
+        this.#changeData(
+          UserAction.UPDATE_POINT,
+          isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+          update,
+        );
         this.#replaceFormToItem();
-      };
+      }
+
+      #handleDeleteClick = (task) => {
+        this.#changeData(
+          UserAction.DELETE_POINT,
+          UpdateType.MINOR,
+          task,
+        );
+      }
 }
 
