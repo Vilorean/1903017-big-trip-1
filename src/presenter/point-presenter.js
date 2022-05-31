@@ -1,8 +1,8 @@
-import WaypointView from '../view/waypoint-view';
-import EventEditView from '../view/event-edit-view';
-import { render, RenderPosition, replace, remove } from '../render';
-import { UserAction, UpdateType } from '../utils/sort-consts';
-import { isDatesEqual } from '../utils/common';
+import WaypointView from '../view/waypoint-view.js';
+import EventEditView from '../view/event-edit-view.js';
+import { render, RenderPosition, replace, remove } from '../render.js';
+import { UserAction, UpdateType } from '../utils/sort-consts.js';
+import { isDatesEqual } from '../utils/common.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -11,7 +11,7 @@ const Mode = {
 
 
 export default class PointPresenter {
-    #tripPointsListElement = null;
+    #waypointListContainer = null;
     #changeData = null;
     #changeMode = null;
 
@@ -21,8 +21,8 @@ export default class PointPresenter {
     #point = null;
     #mode = Mode.DEFAULT;
 
-    constructor(tripPointsListElement, changeData, changeMode) {
-      this.#tripPointsListElement = tripPointsListElement;
+    constructor(waypointListContainer, changeData, changeMode) {
+      this.#waypointListContainer = waypointListContainer;
       this.#changeData = changeData;
       this.#changeMode = changeMode;
     }
@@ -43,7 +43,7 @@ export default class PointPresenter {
       this.#eventEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
       if (prevWaypointComponent === null || prevEventEditComponent === null) {
-        render(this.#tripPointsListElement, this.#waypointComponent, RenderPosition.BEFOREEND);
+        render(this.#waypointListContainer, this.#waypointComponent, RenderPosition.BEFOREEND);
         return;
       }
 
@@ -104,8 +104,8 @@ export default class PointPresenter {
     #handleFavoriteClick = () => {
       this.#changeData(
         UserAction.UPDATE_POINT,
-        UpdateType.MINOR,
-        {...this.#point, isFavorite: !this.#point.isFavorite}
+        UpdateType.PATCH,
+        {...this.#point, isFavorite: !this.#point.isFavorite},
       );
     }
 
