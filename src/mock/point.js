@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { offersList } from '../utils/offers';
+import { offers } from '../utils/offers';
 import { destinations } from '../utils/destinations';
 //import { descriptions } from '../utils/descriptions';
 //import { generateImages } from '../utils/functions';
@@ -144,7 +144,7 @@ const generateFromToDates = () => {
 export const generatePoint = () => {
   const dates = generateFromToDates();
   const destinationArray = destinations();
-  const offerArray = offersList();
+  const offerArray = offers();
 
   /*return {
     id: nanoid(),
@@ -172,7 +172,7 @@ export const generatePoint = () => {
     destination: destinationArray[getRandomInteger(0,destinationArray.length-1)],
     id: nanoid(),
     isFavorite: Boolean(getRandomInteger(0,1)),
-    offersList: offerArray,
+    offers: offerArray,
     type: offerArray[getRandomInteger(0,offerArray.length-1)].type
   };
 };

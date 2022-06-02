@@ -1,5 +1,5 @@
 import { destinations } from '../utils/destinations.js';
-import { offersList } from '../utils/offers.js';
+import { offers } from '../utils/offers.js';
 import SmartView from './smart-view.js';
 //import { wayPointTypes } from '../utils/waypointTypes.js';
 //import { generateImages } from '../utils/functions.js';
@@ -14,7 +14,7 @@ const createEventAddTemplate = (point) => {
   const {basePrice: price, destination, type} = point;
   const waypointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
-  const waypointTypesMarkup = createWaypointTypesMarkup(offersList(), type);
+  const waypointTypesMarkup = createWaypointTypesMarkup(offers(), type);
   const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const createPhotosMarkup = (dest) => {
@@ -28,7 +28,7 @@ const createEventAddTemplate = (point) => {
 
   const photosMarkup = createPhotosMarkup(destination);
 
-  const editedOffersMarkup = createOffersSegmentMarkup(offersList(), type);
+  const editedOffersMarkup = createOffersSegmentMarkup(offers(), type);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -213,7 +213,7 @@ export default class PointAddView extends SmartView {
   }
 
   static createEmptyPoint = () => {
-    const offerArray = offersList();
+    const offerArray = offers();
     const date = new Date();
     return {
       basePrice: 0,

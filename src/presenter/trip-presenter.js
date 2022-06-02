@@ -1,5 +1,6 @@
 import TripSortView from '../view/trip-sort-view.js';
 import EventsListView from '../view/events-list-view.js';
+import LoadingView from '../view/loading-view.js';
 import NoWaypointView from '../view/no-trip-point-view.js';
 
 //import EventAddView from '../view/event-add-view.js';
@@ -13,24 +14,37 @@ import { SortType, UpdateType, UserAction, FilterType } from '../utils/sort-cons
 
 
 export default class TripPresenter {
+  #apiService = null;
+
   #mainContainer = null;
   #tableContainer = null;
+
   #pointsModel = null;
   #filterModel = null;
-  #pointListComponent = new EventsListView();
-  #noPointComponent = null;
+  #waypointListComponent = new EventsListView();
+  #loadingComponent = new LoadingView();
+  #noWaypointComponent = null;
   #sortComponent = null;
+
   #pointPresenter = new Map();
   #pointNewPresenter = null;
+
   #currentSortType = SortType.SORT_DAY;
   #filterType = FilterType.EVERYTHING;
-  constructor(mainContainer, pointsModel, filterModel) {
+  #isLoading = true;
+
+  #destinations = null;
+  #offers = null;
+
+  constructor(mainContainer, pointsModel, filterModel, apiService) {
     this.#mainContainer = mainContainer;
     this.#tableContainer = this.#mainContainer.querySelector('.trip-events');
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointNewPresenter = new PointNewPresenter(this.#pointListComponent, this.#handleViewAction);
+    this.#apiService = apiService;
+
+    this.#pointNewPresenter = new PointNewPresenter(this.#waypointListComponent, this.#handleViewAction);
   }
 
   get points() {
@@ -48,8 +62,19 @@ export default class TripPresenter {
     return filteredPoints;
   }
 
-  init = () => {
-    //render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+  init = async () => {
+    try {
+      this.#destinations = await this.#apiService.destinations;
+    } catch(err) {
+      this.#destinations = [];
+    }
+
+    try {
+      this.#offers = await this.#apiService.offers;
+    } catch(err) {
+      this.#offers = [];
+    }
+    //console.log('c1', this.#destinations, this.#offers);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -107,6 +132,11 @@ export default class TripPresenter {
           this.#clearTable( true);
           this.#renderTable();
           break;
+        case UpdateType.INIT:
+          this.#isLoading = false;
+          remove(this.#loadingComponent);
+          this.#renderTable();
+          break;
       }
     }
 
@@ -126,7 +156,13 @@ export default class TripPresenter {
   }
 
   #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange);
+    const pointPresenter = new PointPresenter(
+      this.#waypointListComponent,
+      this.#handleViewAction,
+      this.#handleModeChange,
+      this.#destinations,
+      this.#offers
+    );
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
@@ -135,9 +171,13 @@ export default class TripPresenter {
     points.forEach((point) => this.#renderPoint(point));
   }
 
+  #renderLoading = () => {
+    render(this.#tableContainer, this.#loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
   #renderNoPoints = () => {
-    this.#noPointComponent = new NoWaypointView(this.#filterType);
-    render(this.#pointListComponent, this.#noPointComponent, RenderPosition.AFTERBEGIN);
+    this.#noWaypointComponent = new NoWaypointView(this.#filterType);
+    render(this.#waypointListComponent, this.#noWaypointComponent, RenderPosition.AFTERBEGIN);
   }
 
   #clearTable = (resetSortType = false) => {
@@ -145,11 +185,12 @@ export default class TripPresenter {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     //ПРОВЕРИТЬ
-    remove(this.#pointListComponent);
+    remove(this.#waypointListComponent);
     //ПРОВЕРИТЬ
-    if (this.#noPointComponent) {
-      remove(this.#noPointComponent);
+    if (this.#noWaypointComponent) {
+      remove(this.#noWaypointComponent);
     }
     if (resetSortType) {
       this.#currentSortType = SortType.SORT_DAY;
@@ -157,8 +198,12 @@ export default class TripPresenter {
   }
 
   #renderTable = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     //ПРОВЕРИТЬ
-    render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+    render(this.#tableContainer, this.#waypointListComponent, RenderPosition.BEFOREEND);
     //ПРОВЕРИТЬ
     const points = this.points;
     const pointCount = points.length;

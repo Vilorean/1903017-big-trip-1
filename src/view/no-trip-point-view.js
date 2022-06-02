@@ -8,7 +8,7 @@ const NoPointsTextType = {
 };
 
 
-const createNoPointTemplate = (filterType) => {
+const createNoWaypointTemplate = (filterType) => {
   const noPointTextValue = NoPointsTextType[filterType];
 
   return (
@@ -24,6 +24,6 @@ export default class NoTripPointView extends AbstractView {
   }
 
   get template() {
-    return createNoPointTemplate(this._data);
+    return createNoWaypointTemplate(this._data);
   }
 }

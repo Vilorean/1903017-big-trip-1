@@ -21,20 +21,26 @@ export default class PointPresenter {
     #point = null;
     #mode = Mode.DEFAULT;
 
-    constructor(waypointListContainer, changeData, changeMode) {
-      this.#waypointListContainer = waypointListContainer;
-      this.#changeData = changeData;
-      this.#changeMode = changeMode;
-    }
+    #apiService = null;
+  #destinations = null;
+  #offers = null;
 
-    init = (point) => {
+  constructor(waypointListContainer, changeData, changeMode, destinations, offers) {
+    this.#waypointListContainer = waypointListContainer;
+    this.#changeData = changeData;
+    this.#changeMode = changeMode;
+    this.#destinations = destinations;
+    this.#offers = offers;
+  }
+
+    init = async (point) => {
       this.#point = point;
 
       const prevWaypointComponent = this.#waypointComponent;
       const prevEventEditComponent = this.#eventEditComponent;
 
       this.#waypointComponent =  new WaypointView(point);
-      this.#eventEditComponent = new EventEditView(point);
+      this.#eventEditComponent = new EventEditView(point, this.#destinations, this.#offers);
 
       this.#waypointComponent.setEditClickHandler(this.#handleEditClick);
       this.#waypointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);

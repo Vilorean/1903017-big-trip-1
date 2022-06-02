@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
-import { offersList } from '../utils/offers';
+import { offers } from '../utils/offers';
 
 const createWaypointTemplate = (point) => {
   const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, isFavorite: isFavorite, type} = point;
@@ -51,7 +51,6 @@ const createWaypointTemplate = (point) => {
 
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
-  // ИСПРАВИТЬ, ЧТОБЫ НЕ ОТРИСОВЫВАЛ, НЕВЫБРАННЫЕ ПРЕДЛОЖЕНИЯ!!!
   const CreateOffers = (pointType, offersByTypes) => {
 
     const createOfferMarkup = (offer) => `<li class="event__offer">
@@ -71,7 +70,7 @@ const createWaypointTemplate = (point) => {
     return offersByCurrentType.map(createOfferMarkup).join('');
   };
 
-  const OffersMarkup = CreateOffers(type, offersList());
+  const OffersMarkup = CreateOffers(type, offers());
 
   return `<li class="trip-events__item">
               <div class="event">
