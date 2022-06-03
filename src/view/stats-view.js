@@ -1,22 +1,53 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import SmartView from './smart-view.js';
+import SmartView from './smart-view';
+
+//import moment from 'moment';
+//import { ChartDataIcons } from '../utils/sort-consts';
 
 import {countPricesByType, countTypes, countTimeSpend, countTimeSpendInMs, TYPES} from '../utils/stats.js';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
+/*const ChartConfiguration = {
+  BAR_HEIGHT: 55,
+  CHART_PADDING_LEFT: 50,
+  FONT_SIZE: 13,
+  TITLE_FONT_SIZE: 23,
+  SCALE_Y_AXES_TICKS_PADDING: 5,
+  BAR_THICKNESS: 44,
+  MIN_BAR_LENGTH: 50,
+};*/
+
 const renderMoneyChart = (moneyCtx, points) => {
-  const tripsPrices = Object.values(countPricesByType(points, TYPES));
+  const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
+  const prices = Object.values(countPricesByType(points, TYPES));
+
+  const arrayOfObj = arrayLabel.map((d, i) => ({
+    label: d,
+    data: prices[i] || 0
+  }));
+
+  const sortedArrayOfObj = arrayOfObj.sort((a, b) => b.data - a.data);
+
+  const newSortedLabels = [];
+  const newSortedPrices = [];
+  sortedArrayOfObj.forEach((d)=> {
+    newSortedLabels.push(d.label);
+    newSortedPrices.push(d.data);
+  });
+
   return new Chart(moneyCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'DRIVE', 'FLIGHT', 'CHECK-IN', 'SIGHTSEEING', 'RESTAURANT'],
+      labels: newSortedLabels,
       datasets: [{
-        data: tripsPrices,
+        data: newSortedPrices,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
+        minBarLength: 80,
+        barThickness: 44
       }],
     },
     options: {
@@ -49,7 +80,6 @@ const renderMoneyChart = (moneyCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
         }],
         xAxes: [{
           ticks: {
@@ -60,7 +90,6 @@ const renderMoneyChart = (moneyCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 80,
         }],
       },
       legend: {
@@ -71,21 +100,39 @@ const renderMoneyChart = (moneyCtx, points) => {
       },
     },
   });
-
 };
 
+
 const renderTypeChart = (typeCtx, points) => {
+  const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
   const types = Object.values(countTypes(points, TYPES));
+
+  const arrayOfObj = arrayLabel.map((d, i) => ({
+    label: d,
+    data: types[i] || 0
+  }));
+
+  const sortedArrayOfObj = arrayOfObj.sort((a, b) => b.data - a.data);
+
+  const newSortedLabels = [];
+  const newSortedTypes = [];
+  sortedArrayOfObj.forEach((d)=> {
+    newSortedLabels.push(d.label);
+    newSortedTypes.push(d.data);
+  });
+
   return new Chart(typeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'DRIVE', 'FLIGHT', 'CHECK-IN', 'SIGHTSEEING', 'RESTAURANT'],
+      labels: newSortedLabels,
       datasets: [{
-        data: types,
+        data: newSortedTypes,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
+        minBarLength: 80,
+        barThickness: 44
       }],
     },
     options: {
@@ -118,7 +165,6 @@ const renderTypeChart = (typeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
         }],
         xAxes: [{
           ticks: {
@@ -130,7 +176,6 @@ const renderTypeChart = (typeCtx, points) => {
             drawBorder: false,
           },
         }],
-        minBarLength: 80,
       },
       legend: {
         display: false,
@@ -140,21 +185,38 @@ const renderTypeChart = (typeCtx, points) => {
       },
     },
   });
-
 };
 
 const renderTimeChart = (timeCtx, points) => {
-  const timeSpendInMs = countTimeSpendInMs(points, TYPES);
+  const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
+  const timeSpendInMs = Object.values(countTimeSpendInMs(points, TYPES));
+
+  const arrayOfObj = arrayLabel.map((d, i) => ({
+    label: d,
+    data: timeSpendInMs[i] || 0
+  }));
+
+  const sortedArrayOfObj = arrayOfObj.sort((a, b) => b.data - a.data);
+
+  const newSortedLabels = [];
+  const newSortedSpentTimes = [];
+  sortedArrayOfObj.forEach((d)=> {
+    newSortedLabels.push(d.label);
+    newSortedSpentTimes.push(d.data);
+  });
+
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'DRIVE', 'FLIGHT', 'CHECK-IN', 'SIGHTSEEING', 'RESTAURANT'],
+      labels: newSortedLabels,
       datasets: [{
-        data: Object.values(timeSpendInMs),
+        data: newSortedSpentTimes,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
+        minBarLength: 90,
+        barThickness: 44
       }],
     },
     options: {
@@ -187,7 +249,6 @@ const renderTimeChart = (timeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
         }],
         xAxes: [{
           ticks: {
@@ -198,7 +259,6 @@ const renderTimeChart = (timeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 90,
         }],
       },
       legend: {
@@ -209,7 +269,6 @@ const renderTimeChart = (timeCtx, points) => {
       },
     },
   });
-
 };
 
 const createStatisticsTemplate = () => (`<section class="statistics">
@@ -223,7 +282,7 @@ const createStatisticsTemplate = () => (`<section class="statistics">
           <div class="statistics__item">
             <canvas class="statistics__chart" id="time" width="900"></canvas>
           </div>
-          </section>`);
+        </section>`);
 
 export default class StatsView extends SmartView {
   #moneyChart = null;
@@ -258,7 +317,6 @@ export default class StatsView extends SmartView {
       this.#timeChart.destroy();
       this.#timeChart = null;
     }
-
   }
 
   restoreHandlers = () => {
@@ -280,5 +338,6 @@ export default class StatsView extends SmartView {
     this.#moneyChart = renderMoneyChart(moneyCtx, points);
     this.#typeChart = renderTypeChart(typeCtx, points);
     this.#timeChart = renderTimeChart(timeCtx, points);
+
   }
 }

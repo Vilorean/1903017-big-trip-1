@@ -9,6 +9,11 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+  ABORTING: 'ABORTING'
+};
 
 export default class PointPresenter {
     #waypointListContainer = null;
@@ -21,26 +26,25 @@ export default class PointPresenter {
     #point = null;
     #mode = Mode.DEFAULT;
 
-    #apiService = null;
   #destinations = null;
-  #offers = null;
+  #allOffers = null;
 
-  constructor(waypointListContainer, changeData, changeMode, destinations, offers) {
+  constructor(waypointListContainer, changeData, changeMode, destinations, allOffers) {
     this.#waypointListContainer = waypointListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
     this.#destinations = destinations;
-    this.#offers = offers;
+    this.#allOffers = allOffers;
   }
 
-    init = async (point) => {
+    init = (point) => {
       this.#point = point;
 
       const prevWaypointComponent = this.#waypointComponent;
       const prevEventEditComponent = this.#eventEditComponent;
 
       this.#waypointComponent =  new WaypointView(point);
-      this.#eventEditComponent = new EventEditView(point, this.#destinations, this.#offers);
+      this.#eventEditComponent = new EventEditView(point, this.#destinations, this.#allOffers);
 
       this.#waypointComponent.setEditClickHandler(this.#handleEditClick);
       this.#waypointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
@@ -58,7 +62,8 @@ export default class PointPresenter {
       }
 
       if (this.#mode === Mode.EDITING) {
-        replace(this.#eventEditComponent, prevEventEditComponent);
+        replace(this.#waypointComponent, prevEventEditComponent);
+        this.#mode = Mode.DEFAULT;
       }
 
       remove(prevWaypointComponent);
@@ -74,6 +79,39 @@ export default class PointPresenter {
       if (this.#mode !== Mode.DEFAULT) {
         this.#eventEditComponent.reset(this.#point);
         this.#replaceFormToItem();
+      }
+    }
+
+    setViewState = (state) => {
+      if (this.#mode === Mode.DEFAULT) {
+        return;
+      }
+
+      const resetFormState = () => {
+        this.#eventEditComponent.updateData({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      };
+
+      switch (state) {
+        case State.SAVING:
+          this.#eventEditComponent.updateData({
+            isDisabled: true,
+            isSaving: true,
+          });
+          break;
+        case State.DELETING:
+          this.#eventEditComponent.updateData({
+            isDisabled: true,
+            isDeleting: true,
+          });
+          break;
+        case State.ABORTING:
+          this.#waypointComponent.shake(resetFormState);
+          this.#eventEditComponent.shake(resetFormState);
+          break;
       }
     }
 
@@ -126,7 +164,6 @@ export default class PointPresenter {
           isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
           update,
         );
-        this.#replaceFormToItem();
       }
 
       #handleDeleteClick = (task) => {

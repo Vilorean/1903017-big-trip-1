@@ -1,4 +1,4 @@
-export const descriptions = () => ([
+export const descr = () => ([
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra.',

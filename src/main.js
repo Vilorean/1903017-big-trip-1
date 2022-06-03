@@ -1,18 +1,13 @@
 import TripTabsView from './view/trip-tabs-view.js';
 import StatsView from './view/stats-view.js';
-import { render, RenderPosition, remove } from './render.js';
-//import {generatePoint} from './mock/point.js';
-import TripPresenter from './presenter/trip-presenter';
+import { render, remove } from './render.js';
+import TripPresenter from './presenter/trip-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
-import { MenuItem } from './utils/sort-consts.js';
+import { MenuItem, RenderPosition } from './utils/sort-consts.js';
 import ApiService from './api-service.js';
 //import TripInfoView from './view/trip-info-view.js';
-
-//const POINT_COUNT = 14;
-
-//const points = Array.from({length: POINT_COUNT}, generatePoint);
 
 const AUTHORIZATION = 'Basic mk8w236sl22785i';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
@@ -23,9 +18,7 @@ const tripControlsFiltersElement = document.querySelector('.trip-controls__filte
 tripControlsFiltersElement.classList.add('visually-hidden');
 
 const apiService = new ApiService(END_POINT, AUTHORIZATION);
-
 const pointsModel = new PointsModel(apiService);
-
 const filterModel = new FilterModel();
 
 //render(siteTripMainElement, new TripInfoView().element, RenderPosition.AFTERBEGIN);
@@ -37,23 +30,22 @@ const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterMode
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
 let mode = 'TABLE';
+let statisticsComponent = null;
 
 const handlePointNewFormClose = () => {
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.remove('visually-hidden');
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.remove('visually-hidden');
-  //siteMenuComponent.setMenuItem(MenuItem.TASKS);
 };
-
-let statisticsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
       if (mode !== 'TABLE') {
         filterPresenter.init();
-        tripPresenter.init();
-        remove(statisticsComponent);
-        mode = 'TABLE';
+        tripPresenter.init().finally(() => {
+          remove(statisticsComponent);
+          mode = 'TABLE';
+        });
       }
       break;
     case MenuItem.STATS:
@@ -79,6 +71,7 @@ tripPresenter.init().finally(() => {
 });
 
 document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+  evt.target.disabled = true;
   evt.preventDefault();
   remove(statisticsComponent);
   filterPresenter.destroy();
@@ -91,4 +84,3 @@ document.querySelector('.trip-main__event-add-btn').addEventListener('click', (e
     mode = 'TABLE';
   });
 });
-
