@@ -1,9 +1,9 @@
 import AbstractView from './abstract-view';
 
-const createWaypointListTemplate = () => ('<ul class="trip-events__list"></ul>');
+const createEventsListTemplate = () => ('<ul class="trip-events__list"></ul>');
 
-export default class WaypointListView extends AbstractView {
+export default class EventsListView extends AbstractView {
   get template() {
-    return createWaypointListTemplate();
+    return createEventsListTemplate();
   }
 }

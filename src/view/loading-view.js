@@ -1,6 +1,6 @@
 import AbstractView from './abstract-view.js';
 
-const createNoWaypointTemplate = () => (
+const createNoTripWaypointsTemplate = () => (
   `<p class="trip-events__msg">
     Loading...
   </p>`
@@ -8,6 +8,6 @@ const createNoWaypointTemplate = () => (
 
 export default class LoadingView extends AbstractView {
   get template() {
-    return createNoWaypointTemplate();
+    return createNoTripWaypointsTemplate();
   }
 }

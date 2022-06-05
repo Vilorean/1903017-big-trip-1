@@ -1,5 +1,3 @@
-//import { destinations } from '../utils/destinations';
-//import { offers } from '../utils/offers';
 import SmartView from './smart-view';
 import {createWaypointTypesMarkup} from '../utils/forms';
 import { changeCheckedOffers, createOffersSegmentMarkup, getChangedByTypeOffers } from '../utils/offers';
@@ -8,7 +6,7 @@ import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointEditTemplate = (point, destinations, allOffers) => {
+const createEventEditTemplate = (point, destinations, allOffers) => {
 
   const {basePrice: price, destination, type, offers, isDisabled, isSaving, isDeleting} = point;
 
@@ -94,7 +92,7 @@ const createPointEditTemplate = (point, destinations, allOffers) => {
             </li>`;
 };
 
-export default class PointEditView extends SmartView {
+export default class EventEditView extends SmartView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
@@ -103,7 +101,7 @@ export default class PointEditView extends SmartView {
 
   constructor(point, destinations, allOffers) {
     super();
-    this._data = PointEditView.parsePointToData(point);
+    this._data = EventEditView.parsePointToData(point);
 
     this.#destinations = destinations;
     this.#allOffers = allOffers;
@@ -113,7 +111,7 @@ export default class PointEditView extends SmartView {
   }
 
   get template() {
-    return createPointEditTemplate(this._data, this.#destinations, this.#allOffers);
+    return createEventEditTemplate(this._data, this.#destinations, this.#allOffers);
   }
 
   removeElement = () => {
@@ -131,7 +129,7 @@ export default class PointEditView extends SmartView {
 
   reset = (point) => {
     this.updateData(
-      PointEditView.parsePointToData(point),
+      EventEditView.parsePointToData(point),
     );
   }
 
@@ -241,16 +239,15 @@ export default class PointEditView extends SmartView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit(PointEditView.parseDataToPoint(this._data));
+    this._callback.formSubmit(EventEditView.parseDataToPoint(this._data));
   }
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.deleteClick(PointEditView.parseDataToPoint(this._data));
+    this._callback.deleteClick(EventEditView.parseDataToPoint(this._data));
   }
 
   static parsePointToData = (point) => ({...point,
-    // В будущем здесь появится обработка Предложений (Offers).
     isDisabled: false,
     isSaving: false,
     isDeleting: false
@@ -258,7 +255,6 @@ export default class PointEditView extends SmartView {
 
   static parseDataToPoint = (data) => {
     const point = {...data};
-    // В будущем здесь появится обработка Предложений (Offers).
     delete point.isDisabled;
     delete point.isSaving;
     delete point.isDeleting;

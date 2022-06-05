@@ -36,7 +36,18 @@ export const RenderPosition = {
   AFTEREND: 'afterend'
 };
 
-export const NoPointsTextType = {
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+  ABORTING: 'ABORTING'
+};
+
+export const NoWaypointsTextType = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
   [FilterType.PAST]: 'There are no past events now',
   [FilterType.FUTURE]: 'There are no future events now'

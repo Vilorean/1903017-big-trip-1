@@ -27,7 +27,6 @@ export const createOffersSegmentMarkup = (offers, pointType) => {
                           </label>
                         </div>`;
 
-  //const offersByCurrentType = getChangedByTypeOffers(allOffers, pointType);
   const offersMarkup = offers.map(createOfferMarkup).join('');
 
   if (offers.length !== 0){
@@ -47,6 +46,5 @@ export const changeCheckedOffers = (offers, checkedOffer) => {
     'isChosen': offer.title === checkedOffer ? !offer.isChosen : offer.isChosen
   }));
 
-  //console.log(changedOffers);
   return changedOffers;
 };

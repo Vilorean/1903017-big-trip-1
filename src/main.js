@@ -1,11 +1,11 @@
 import TripTabsView from './view/trip-tabs-view.js';
 import StatsView from './view/stats-view.js';
-import { render, remove } from './render.js';
+import {render, remove} from './render.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
-import { MenuItem, RenderPosition } from './utils/sort-consts.js';
+import {MenuItem, RenderPosition} from './consts.js';
 import ApiService from './api-service.js';
 //import TripInfoView from './view/trip-info-view.js';
 

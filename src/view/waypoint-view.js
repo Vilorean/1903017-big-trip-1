@@ -96,7 +96,7 @@ const createWaypointTemplate = (point) => {
             </li>`;
 };
 
-export default class waypointView extends AbstractView {
+export default class WaypointView extends AbstractView {
   #point = null;
 
   constructor(point) {
@@ -128,4 +128,3 @@ export default class waypointView extends AbstractView {
     this._callback.favoriteClick();
   }
 }
-

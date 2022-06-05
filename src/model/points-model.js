@@ -1,9 +1,9 @@
 import AbstractObservable from '../utils/abstract-observable';
-import { UpdateType } from '../utils/sort-consts';
+import {UpdateType} from '../consts';
 
 export default class PointsModel extends AbstractObservable {
-  #apiService = null;
   #points = [];
+  #apiService = null;
 
   constructor(apiService) {
     super();
@@ -39,16 +39,18 @@ export default class PointsModel extends AbstractObservable {
     try {
       const response = await this.#apiService.updatePoint(update);
       const updatedPoint = this.#adaptToClient(response);
+
       this.#points = [
         ...this.#points.slice(0, index),
         updatedPoint,
         ...this.#points.slice(index + 1),
       ];
+
       this._notify(updateType, updatedPoint);
     } catch(err) {
       throw new Error('Can\'t update task');
     }
-  }
+  };
 
   addPoint = async (updateType, update) => {
     try {
@@ -59,7 +61,7 @@ export default class PointsModel extends AbstractObservable {
     } catch(err) {
       throw new Error('Can\'t add point');
     }
-  }
+  };
 
   deletePoint = async (updateType, update) => {
     const index = this.#points.findIndex((task) => task.id === update.id);
@@ -78,7 +80,7 @@ export default class PointsModel extends AbstractObservable {
     } catch(err) {
       throw new Error('Can\'t delete point');
     }
-  }
+  };
 
   #getCompletedOffers = (offers) => {
     const completedOffers = offers;
@@ -89,7 +91,7 @@ export default class PointsModel extends AbstractObservable {
     }
 
     return completedOffers;
-  }
+  };
 
   #adaptToClient = (point) => {
     const adaptedPoint = {...point,
@@ -107,5 +109,4 @@ export default class PointsModel extends AbstractObservable {
 
     return adaptedPoint;
   };
-
 }

@@ -1,7 +1,4 @@
 import SmartView from './smart-view.js';
-//import { wayPointTypes } from '../utils/waypointTypes.js';
-//import { generateImages } from '../utils/functions.js';
-//import AbstractView from './abstract-view.js';
 import { createWaypointTypesMarkup } from '../utils/forms.js';
 import { changeCheckedOffers, createOffersSegmentMarkup, getChangedByTypeOffers } from '../utils/offers.js';
 import flatpickr from 'flatpickr';
@@ -94,7 +91,7 @@ const createEventAddTemplate = (point, destinations, allOffers) => {
             </li>`;
 };
 
-export default class PointAddView extends SmartView {
+export default class EventAddView extends SmartView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
@@ -103,7 +100,7 @@ export default class PointAddView extends SmartView {
 
   constructor(destinations, offers) {
     super();
-    this._data = PointAddView.createEmptyPoint(offers);
+    this._data = EventAddView.createEmptyPoint(offers);
 
     this.#destinations = destinations;
     this.#allOffers = offers;
@@ -131,7 +128,7 @@ export default class PointAddView extends SmartView {
 
   reset = (point) => {
     this.updateData(
-      PointAddView.parsePointToData(point),
+      EventAddView.parsePointToData(point),
     );
   }
 
@@ -232,12 +229,12 @@ export default class PointAddView extends SmartView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit(PointAddView.parseDataToPoint(this._data));
+    this._callback.formSubmit(EventAddView.parseDataToPoint(this._data));
   }
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.deleteClick(PointAddView.parseDataToPoint(this._data));
+    this._callback.deleteClick(EventAddView.parseDataToPoint(this._data));
   }
 
   #getChangedDestination = (destinationName) => {
@@ -304,4 +301,3 @@ export default class PointAddView extends SmartView {
     return point;
   }
 }
-

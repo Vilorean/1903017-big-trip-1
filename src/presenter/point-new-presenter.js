@@ -1,71 +1,61 @@
-import PointAddView from '../view/event-add-view.js';
-import { remove, render, RenderPosition } from '../render';
-import { UserAction, UpdateType } from '../utils/sort-consts.js';
+import EventAddView from '../view/event-add-view.js';
+import {UserAction, UpdateType} from '../consts.js';
+import {remove, render, RenderPosition} from '../render.js';
 
 export default class PointNewPresenter {
-    #pointListContainer = null;
+    #eventsListContainer = null;
     #changeData = null;
-    #pointAddComponent = null;
+    #eventAddComponent = null;
     #destroyCallback = null;
-
     #destinations = null;
     #allOffers = null;
 
-    constructor(pointListContainer, changeData) {
-      this.#pointListContainer = pointListContainer;
+    constructor(eventsListContainer, changeData) {
+      this.#eventsListContainer = eventsListContainer;
       this.#changeData = changeData;
     }
 
     init = (callback, destinations, allOffers) => {
       this.#destroyCallback = callback;
 
-      if (this.#pointAddComponent !== null) {
+      if (this.#eventAddComponent !== null) {
         return;
       }
 
       this.#destinations = destinations;
       this.#allOffers = allOffers;
 
-      this.#pointAddComponent = new PointAddView(this.#destinations, this.#allOffers);
-      this.#pointAddComponent.setFormSubmitHandler(this.#handleFormSubmit);
-      this.#pointAddComponent.setDeleteClickHandler(this.#handleDeleteClick);
+      this.#eventAddComponent = new EventAddView(this.#destinations, this.#allOffers);
+      this.#eventAddComponent.setFormSubmitHandler(this.#handleFormSubmit);
+      this.#eventAddComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
-      render(this.#pointListContainer, this.#pointAddComponent, RenderPosition.AFTERBEGIN);
-
+      render(this.#eventsListContainer, this.#eventAddComponent, RenderPosition.AFTERBEGIN);
       document.addEventListener('keydown', this.#escKeyDownHandler);
-    }
+    };
 
     destroy = () => {
-      if (this.#pointAddComponent === null) {
+      if (this.#eventAddComponent === null) {
         return;
       }
 
       this.#destroyCallback?.();
-      remove(this.#pointAddComponent);
-      this.#pointAddComponent = null;
+      remove(this.#eventAddComponent);
+      this.#eventAddComponent = null;
 
       document.removeEventListener('keydown', this.#escKeyDownHandler);
       document.querySelector('.trip-main__event-add-btn').disabled = false;
-    }
+    };
 
-    setSaving = () => {
-      this.#pointAddComponent.updateData({
-        isDisabled: true,
-        isSaving: true,
-      });
-    }
+    #escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        this.destroy();
+      }
+    };
 
-    setAborting = () => {
-      const resetFormState = () => {
-        this.#pointAddComponent.updateData({
-          isDisabled: false,
-          isSaving: false,
-          isDeleting: false,
-        });
-      };
-
-      this.#pointAddComponent.shake(resetFormState);
-    }
+    #handleDeleteClick = () => {
+      this.destroy();
+    };
 
     #handleFormSubmit = (point) => {
       this.#changeData(
@@ -74,17 +64,24 @@ export default class PointNewPresenter {
         point
       );
       document.querySelector('.trip-main__event-add-btn').disabled = false;
-    }
+    };
 
-    #handleDeleteClick = () => {
-      this.destroy();
-    }
+    setSaving = () => {
+      this.#eventAddComponent.updateData({
+        isDisabled: true,
+        isSaving: true,
+      });
+    };
 
-    #escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        this.destroy();
-      }
-    }
+    setAborting = () => {
+      const resetFormState = () => {
+        this.#eventAddComponent.updateData({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      };
+
+      this.#eventAddComponent.shake(resetFormState);
+    };
 }
-

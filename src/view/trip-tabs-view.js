@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import { MenuItem } from '../utils/sort-consts';
+import {MenuItem} from '../consts';
 
 const createTripTabsTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
