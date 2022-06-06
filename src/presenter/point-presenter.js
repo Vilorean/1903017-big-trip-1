@@ -36,6 +36,7 @@ export default class PointPresenter {
 
       this.#waypointComponent.setEditClickHandler(this.#handleEditClick);
       this.#waypointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
+
       this.#eventEditComponent.setRollupClickHandler(this.#handleRollupClick);
       this.#eventEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
       this.#eventEditComponent.setDeleteClickHandler(this.#handleDeleteClick);

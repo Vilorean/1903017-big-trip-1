@@ -17,7 +17,6 @@ const countPricesByType = (points, types) => {
   return pricesByTypes;
 };
 
-
 const countTypes = (points, types) => {
   for (const type of types) {
     points.map((trip) => {

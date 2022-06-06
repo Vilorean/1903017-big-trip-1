@@ -46,7 +46,6 @@ export default class FilterPresenter {
       remove(prevFilterComponent);
     };
 
-
     #handleModelEvent = () => {
       this.init();
     };

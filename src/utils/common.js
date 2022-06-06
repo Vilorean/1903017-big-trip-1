@@ -1,7 +1,5 @@
 import dayjs from 'dayjs';
 
-export const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB);
-
 export const createWaypointTypesMarkup = (offers, chosenPointType) => {
   const createTypeMarkup = (offer) => {
 
@@ -19,3 +17,4 @@ export const createWaypointTypesMarkup = (offers, chosenPointType) => {
   return offers.map(createTypeMarkup).join('');
 };
 
+export const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB);

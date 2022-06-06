@@ -106,4 +106,3 @@ export const countTypesInMs = {
 };
 
 export const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
-

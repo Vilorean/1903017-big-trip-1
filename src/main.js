@@ -1,17 +1,19 @@
+import HeaderInfoView from './view/header-info-view.js';
 import TripTabsView from './view/trip-tabs-view.js';
 import StatsView from './view/stats-view.js';
 import {render, remove} from './render.js';
+import {MenuItem, RenderPosition} from './consts.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
-import {MenuItem, RenderPosition} from './consts.js';
 import Api from './api.js';
 
 const AUTHORIZATION = 'Basic mk8w236sl22785i';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 
 const pageMainElement = document.querySelector('.page-body');
+const headerMenu = pageMainElement.querySelector('.trip-main');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 tripControlsFiltersElement.classList.add('visually-hidden');
@@ -62,6 +64,7 @@ tripPresenter.init().finally(() => {
   pointsModel.init().finally(() => {
     siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
     render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+    render(headerMenu, new HeaderInfoView().element, RenderPosition.AFTERBEGIN);
     tripControlsFiltersElement.classList.remove('visually-hidden');
   });
 });

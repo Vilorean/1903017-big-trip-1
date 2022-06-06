@@ -5,7 +5,7 @@ import NoTripWaypointsView from '../view/no-trip-waypoints-view.js';
 import PointPresenter from './point-presenter.js';
 import PointNewPresenter from './point-new-presenter.js';
 import {render, RenderPosition, remove} from '../render.js';
-import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/sort-point.js';
+import {sortRoutesByDay, sortRoutesByDuration, sortRoutesByPrice} from '../utils/sort-point.js';
 import {filter} from '../utils/filter.js';
 import {SortType, UpdateType, UserAction, FilterType, State} from '../consts.js';
 
@@ -28,14 +28,15 @@ export default class TripPresenter {
 
   #currentSortType = SortType.SORT_DAY;
   #filterType = FilterType.EVERYTHING;
-  #isLoading = true;
 
+  #isLoading = true;
   #destinations = null;
   #offers = null;
 
   constructor(mainContainer, pointsModel, filterModel, api) {
     this.#mainContainer = mainContainer;
     this.#tableContainer = this.#mainContainer.querySelector('.trip-events');
+
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
@@ -50,11 +51,11 @@ export default class TripPresenter {
 
     switch (this.#currentSortType) {
       case SortType.SORT_DAY:
-        return filteredPoints.sort(sortTaskByDay);
+        return filteredPoints.sort(sortRoutesByDay);
       case SortType.SORT_TIME:
-        return filteredPoints.sort(sortTaskByDuration);
+        return filteredPoints.sort(sortRoutesByDuration);
       case SortType.SORT_PRICE:
-        return filteredPoints.sort(sortTaskByPrice);
+        return filteredPoints.sort(sortRoutesByPrice);
     }
     return filteredPoints;
   }

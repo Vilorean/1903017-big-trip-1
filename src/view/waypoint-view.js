@@ -29,17 +29,17 @@ const createWaypointTemplate = (point) => {
       };
     };
 
-    const timeDifference = getTimeDifference();
+    const differenceInTime = getTimeDifference();
     const resultArray = [];
 
-    if (timeDifference.days !== 0) {
-      resultArray[0] = `${String(timeDifference.days).padStart(2,'0')}D`;
+    if (differenceInTime.days !== 0) {
+      resultArray[0] = `${String(differenceInTime.days).padStart(2,'0')}D`;
     }
-    if (timeDifference.hours !== 0) {
-      resultArray[1] = `${String(timeDifference.hours).padStart(2,'0')}H`;
+    if (differenceInTime.hours !== 0) {
+      resultArray[1] = `${String(differenceInTime.hours).padStart(2,'0')}H`;
     }
-    if (timeDifference.minutes !== 0) {
-      resultArray[2] = `${String(timeDifference.minutes).padStart(2,'0')}M`;
+    if (differenceInTime.minutes !== 0) {
+      resultArray[2] = `${String(differenceInTime.minutes).padStart(2,'0')}M`;
     }
 
     return resultArray.join(' ');
