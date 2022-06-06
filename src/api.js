@@ -1,6 +1,6 @@
 import {Method} from './consts';
 
-export default class ApiService {
+export default class Api {
     #endPoint = null;
     #authorization = null;
 
@@ -11,17 +11,17 @@ export default class ApiService {
 
     get points() {
       return this.#load({url: 'points'})
-        .then(ApiService.parseResponse);
+        .then(Api.parseResponse);
     }
 
     get offers() {
       return this.#load({url: 'offers'})
-        .then(ApiService.parseResponse);
+        .then(Api.parseResponse);
     }
 
     get destinations() {
       return this.#load({url: 'destinations'})
-        .then(ApiService.parseResponse);
+        .then(Api.parseResponse);
     }
 
     updatePoint = async (point) => {
@@ -32,7 +32,7 @@ export default class ApiService {
         headers: new Headers({'Content-Type': 'application/json'}),
       });
 
-      return await ApiService.parseResponse(response);
+      return await Api.parseResponse(response);
     }
 
     addPoint = async (point) => {
@@ -43,7 +43,7 @@ export default class ApiService {
         headers: new Headers({'Content-Type': 'application/json'}),
       });
 
-      return await ApiService.parseResponse(response);
+      return await Api.parseResponse(response);
     }
 
       deletePoint = async (point) => {
@@ -69,10 +69,10 @@ export default class ApiService {
       );
 
       try {
-        ApiService.checkStatus(response);
+        Api.checkStatus(response);
         return response;
       } catch (err) {
-        ApiService.catchError(err);
+        Api.catchError(err);
       }
     }
 

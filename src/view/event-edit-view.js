@@ -1,6 +1,6 @@
 import SmartView from './smart-view';
-import {createWaypointTypesMarkup} from '../utils/forms';
-import { changeCheckedOffers, createOffersSegmentMarkup, getChangedByTypeOffers } from '../utils/offers';
+import {createWaypointTypesMarkup} from '../utils/common';
+import {changeCheckedOffers, createOffersSegmentMarkup, getChangedByTypeOffers} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
@@ -125,13 +125,13 @@ export default class EventEditView extends SmartView {
       this.#datepickerTo.destroy();
       this.#datepickerTo = null;
     }
-  }
+  };
 
   reset = (point) => {
     this.updateData(
       EventEditView.parsePointToData(point),
     );
-  }
+  };
 
   restoreHandlers = () => {
     this.#setInnerHandlers();
@@ -139,22 +139,22 @@ export default class EventEditView extends SmartView {
     this.setRollupClickHandler(this._callback.rollupClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
-  }
+  };
 
   setRollupClickHandler = (callback) => {
     this._callback.rollupClick = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
-  }
+  };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-  }
+  };
 
   setDeleteClickHandler = (callback) => {
     this._callback.deleteClick = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
-  }
+  };
 
   #setDatepicker = () => {
     this.#datepickerFrom = flatpickr(
@@ -175,7 +175,7 @@ export default class EventEditView extends SmartView {
         onChange: this.#dateToChangeHandler
       },
     );
-  }
+  };
 
   #setInnerHandlers = () => {
     this.element.querySelector('.event__type-group')
@@ -188,19 +188,19 @@ export default class EventEditView extends SmartView {
     for (let i = 0; i < offerElements.length; i++) {
       offerElements[i].addEventListener('click', this.#offerClickHandler);
     }
-  }
+  };
 
   #dateFromChangeHandler = ([userDate]) => {
     this.updateData({
       dateFrom: userDate.toISOString(),
     });
-  }
+  };
 
   #dateToChangeHandler = ([userDate]) => {
     this.updateData({
       dateTo: userDate.toISOString(),
     });
-  }
+  };
 
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
@@ -208,7 +208,7 @@ export default class EventEditView extends SmartView {
       type: evt.target.value,
       offers: getChangedByTypeOffers(this.#allOffers, evt.target.value)
     }, false);
-  }
+  };
 
   #offerClickHandler = (evt) => {
     evt.preventDefault();
@@ -216,36 +216,36 @@ export default class EventEditView extends SmartView {
     this.updateData({
       offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
     }, false);
-  }
+  };
 
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
       destination: this.#getChangedDestination(evt.target.value, this.#destinations)
     }, false);
-  }
+  };
 
   #basePriceChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
       basePrice: parseInt(evt.target.value, 10)
     }, true);
-  }
+  };
 
   #rollupClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.rollupClick();
-  }
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit(EventEditView.parseDataToPoint(this._data));
-  }
+  };
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.deleteClick(EventEditView.parseDataToPoint(this._data));
-  }
+  };
 
   static parsePointToData = (point) => ({...point,
     isDisabled: false,
@@ -260,7 +260,7 @@ export default class EventEditView extends SmartView {
     delete point.isDeleting;
 
     return point;
-  }
+  };
 
   #getChangedDestination = (destinationName, destinations) => {
     const allDestinations = destinations;

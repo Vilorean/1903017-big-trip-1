@@ -10,7 +10,7 @@ import {filter} from '../utils/filter.js';
 import {SortType, UpdateType, UserAction, FilterType, State} from '../consts.js';
 
 export default class TripPresenter {
-  #apiService = null;
+  #api = null;
 
   #mainContainer = null;
   #tableContainer = null;
@@ -33,13 +33,13 @@ export default class TripPresenter {
   #destinations = null;
   #offers = null;
 
-  constructor(mainContainer, pointsModel, filterModel, apiService) {
+  constructor(mainContainer, pointsModel, filterModel, api) {
     this.#mainContainer = mainContainer;
     this.#tableContainer = this.#mainContainer.querySelector('.trip-events');
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#apiService = apiService;
+    this.#api = api;
     this.#pointNewPresenter = new PointNewPresenter(this.#eventsListComponent, this.#handleViewAction);
   }
 
@@ -61,13 +61,13 @@ export default class TripPresenter {
 
   init = async () => {
     try {
-      this.#destinations = await this.#apiService.destinations;
+      this.#destinations = await this.#api.destinations;
     } catch(err) {
       this.#destinations = [];
     }
 
     try {
-      this.#offers = await this.#apiService.offers;
+      this.#offers = await this.#api.offers;
     } catch(err) {
       this.#offers = [];
     }

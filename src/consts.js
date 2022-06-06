@@ -59,3 +59,51 @@ export const Method = {
   POST: 'POST',
   DELETE: 'DELETE'
 };
+
+export const ChartConfiguration = {
+  CHART_PADDING_LEFT: 50,
+  FONT_SIZE: 13,
+  TITLE_FONT_SIZE: 23,
+  SCALE_Y_AXES_TICKS_PADDING: 5,
+  BAR_THICKNESS: 44,
+  MIN_BAR_LENGTH: 50,
+};
+
+export const pricesByTypes = {
+  'TAXI': 0,
+  'BUS': 0,
+  'TRAIN': 0,
+  'SHIP': 0,
+  'DRIVE': 0,
+  'FLIGHT': 0,
+  'CHECK-IN': 0,
+  'SIGHTSEEING': 0,
+  'RESTAURANT': 0,
+};
+
+export const countTypesNumber = {
+  'TAXI': 0,
+  'BUS': 0,
+  'TRAIN': 0,
+  'SHIP': 0,
+  'DRIVE': 0,
+  'FLIGHT': 0,
+  'CHECK-IN': 0,
+  'SIGHTSEEING': 0,
+  'RESTAURANT': 0,
+};
+
+export const countTypesInMs = {
+  'TAXI': 0,
+  'BUS': 0,
+  'TRAIN': 0,
+  'SHIP': 0,
+  'DRIVE': 0,
+  'FLIGHT': 0,
+  'CHECK-IN': 0,
+  'SIGHTSEEING': 0,
+  'RESTAURANT': 0,
+};
+
+export const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
+

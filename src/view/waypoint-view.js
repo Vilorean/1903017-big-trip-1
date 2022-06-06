@@ -8,7 +8,6 @@ const createWaypointTemplate = (point) => {
 
   const dayFrom = dayjs(ISOFrom).format('MMM D');
   const dateFrom = dayjs(ISOFrom).format('YYYY-MM-DD');
-
   const TimeFrom = dayjs(ISOFrom).format('HH:mm');
   const DatetimeFrom = dayjs(ISOFrom).format('YYYY-MM-DDTHH:mm');
 

@@ -1,6 +1,6 @@
 import SmartView from './smart-view.js';
-import { createWaypointTypesMarkup } from '../utils/forms.js';
-import { changeCheckedOffers, createOffersSegmentMarkup, getChangedByTypeOffers } from '../utils/offers.js';
+import {createWaypointTypesMarkup} from '../utils/common.js';
+import {changeCheckedOffers, createOffersSegmentMarkup, getChangedByTypeOffers} from '../utils/offers.js';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
@@ -275,7 +275,6 @@ export default class EventAddView extends SmartView {
         'name': '',
         'pictures': []
       },
-      //id: null,
       isFavorite: false,
       offers: currentOffers,
       type: 'taxi',

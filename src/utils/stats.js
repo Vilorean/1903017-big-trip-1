@@ -1,22 +1,11 @@
 import dayjs from 'dayjs';
+import {pricesByTypes, countTypesNumber} from '../consts';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
 const TYPES = ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'DRIVE', 'FLIGHT', 'CHECK-IN', 'SIGHTSEEING', 'RESTAURANT'];
 
 const countPricesByType = (points, types) => {
-  const pricesByTypes = {
-    'TAXI': 0,
-    'BUS': 0,
-    'TRAIN': 0,
-    'SHIP': 0,
-    'DRIVE': 0,
-    'FLIGHT': 0,
-    'CHECK-IN': 0,
-    'SIGHTSEEING': 0,
-    'RESTAURANT': 0,
-  };
-
   for (const type of types) {
     points.map((trip) => {
       if (trip.type.toUpperCase() === type) {
@@ -30,18 +19,6 @@ const countPricesByType = (points, types) => {
 
 
 const countTypes = (points, types) => {
-  const countTypesNumber = {
-    'TAXI': 0,
-    'BUS': 0,
-    'TRAIN': 0,
-    'SHIP': 0,
-    'DRIVE': 0,
-    'FLIGHT': 0,
-    'CHECK-IN': 0,
-    'SIGHTSEEING': 0,
-    'RESTAURANT': 0,
-  };
-
   for (const type of types) {
     points.map((trip) => {
       if (trip.type.toUpperCase() === type) {

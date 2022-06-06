@@ -6,7 +6,7 @@ import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
 import {MenuItem, RenderPosition} from './consts.js';
-import ApiService from './api-service.js';
+import Api from './api.js';
 
 const AUTHORIZATION = 'Basic mk8w236sl22785i';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
@@ -16,13 +16,13 @@ const tripControlsNavigationElement = document.querySelector('.trip-controls__na
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 tripControlsFiltersElement.classList.add('visually-hidden');
 
-const apiService = new ApiService(END_POINT, AUTHORIZATION);
-const pointsModel = new PointsModel(apiService);
+const api = new Api(END_POINT, AUTHORIZATION);
+const pointsModel = new PointsModel(api);
 const filterModel = new FilterModel();
 
 const siteMenuComponent = new TripTabsView();
 
-const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel, apiService);
+const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
 let mode = 'TABLE';

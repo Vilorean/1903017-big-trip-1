@@ -7,7 +7,6 @@ const NoWaypointsTextType = {
   [FilterType.FUTURE]: 'There are no future events now'
 };
 
-
 const createNoTripWaypointsTemplate = (filterType) => {
   const noWaypointTextValue = NoWaypointsTextType[filterType];
 

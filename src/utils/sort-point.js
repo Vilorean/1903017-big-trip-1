@@ -1,22 +1,22 @@
 import dayjs from 'dayjs';
 
-export const sortTaskByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+export const sortTaskByDay = (waypointA, waypointB) => dayjs(waypointA.dateFrom).diff(dayjs(waypointB.dateFrom));
 
-export const sortTaskByDuration = (pointA, pointB) => {
-  const durationPointA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
-  const durationPointB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+export const sortTaskByDuration = (waypointA, waypointB) => {
+  const durationWaypointA = dayjs(waypointA.dateTo).diff(dayjs(waypointA.dateFrom));
+  const durationWaypointB = dayjs(waypointB.dateTo).diff(dayjs(waypointB.dateFrom));
 
-  if (durationPointB - durationPointA !== 0) {
-    return durationPointB - durationPointA;
+  if (durationWaypointB - durationWaypointA !== 0) {
+    return durationWaypointB - durationWaypointA;
   } else {
-    return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+    return dayjs(waypointA.dateFrom).diff(dayjs(waypointB.dateFrom));
   }
 };
 
-export const sortTaskByPrice = (pointA, pointB) => {
-  if (pointB.basePrice - pointA.basePrice !== 0) {
-    return pointB.basePrice - pointA.basePrice;
+export const sortTaskByPrice = (waypointA, waypointB) => {
+  if (waypointB.basePrice - waypointA.basePrice !== 0) {
+    return waypointB.basePrice - waypointA.basePrice;
   } else {
-    return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+    return dayjs(waypointA.dateFrom).diff(dayjs(waypointB.dateFrom));
   }
 };

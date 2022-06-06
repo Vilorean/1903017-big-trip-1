@@ -1,24 +1,12 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart-view';
-
-//import moment from 'moment';
-//import { ChartDataIcons } from '../utils/sort-consts';
+import {arrayLabel, ChartConfiguration} from '../consts';
 
 import {countPricesByType, countTypes, countTimeSpend, countTimeSpendInMs, TYPES} from '../utils/stats.js';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const ChartConfiguration = {
-  CHART_PADDING_LEFT: 50,
-  FONT_SIZE: 13,
-  TITLE_FONT_SIZE: 23,
-  SCALE_Y_AXES_TICKS_PADDING: 5,
-  BAR_THICKNESS: 44,
-  MIN_BAR_LENGTH: 50,
-};
-
 const renderMoneyChart = (moneyCtx, points) => {
-  const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
   const prices = Object.values(countPricesByType(points, TYPES));
 
   const arrayOfObj = arrayLabel.map((d, i) => ({
@@ -102,9 +90,7 @@ const renderMoneyChart = (moneyCtx, points) => {
   });
 };
 
-
 const renderTypeChart = (typeCtx, points) => {
-  const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
   const types = Object.values(countTypes(points, TYPES));
 
   const arrayOfObj = arrayLabel.map((d, i) => ({
@@ -189,7 +175,6 @@ const renderTypeChart = (typeCtx, points) => {
 };
 
 const renderTimeChart = (timeCtx, points) => {
-  const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
   const timeSpendInMs = Object.values(countTimeSpendInMs(points, TYPES));
 
   const arrayOfObj = arrayLabel.map((d, i) => ({
@@ -295,7 +280,6 @@ export default class StatsView extends SmartView {
     super();
 
     this._data = points;
-
     this.#setCharts();
   }
 

@@ -3,11 +3,11 @@ import {UpdateType} from '../consts';
 
 export default class PointsModel extends AbstractObservable {
   #points = [];
-  #apiService = null;
+  #api = null;
 
-  constructor(apiService) {
+  constructor(api) {
     super();
-    this.#apiService = apiService;
+    this.#api = api;
   }
 
   set points(points) {
@@ -20,7 +20,7 @@ export default class PointsModel extends AbstractObservable {
 
   init = async () => {
     try {
-      const points = await this.#apiService.points;
+      const points = await this.#api.points;
       this.#points = points.map(this.#adaptToClient);
     } catch(err) {
       this.#points = [];
@@ -37,7 +37,7 @@ export default class PointsModel extends AbstractObservable {
     }
 
     try {
-      const response = await this.#apiService.updatePoint(update);
+      const response = await this.#api.updatePoint(update);
       const updatedPoint = this.#adaptToClient(response);
 
       this.#points = [
@@ -54,7 +54,7 @@ export default class PointsModel extends AbstractObservable {
 
   addPoint = async (updateType, update) => {
     try {
-      const response = await this.#apiService.addPoint(update);
+      const response = await this.#api.addPoint(update);
       const newPoint = this.#adaptToClient(response);
       this.#points = [newPoint, ...this.#points];
       this._notify(updateType, newPoint);
@@ -71,7 +71,7 @@ export default class PointsModel extends AbstractObservable {
     }
 
     try {
-      await this.#apiService.deletePoint(update);
+      await this.#api.deletePoint(update);
       this.#points = [
         ...this.#points.slice(0, index),
         ...this.#points.slice(index + 1),
