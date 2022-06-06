@@ -8,15 +8,14 @@ import SmartView from './smart-view';
 import {countPricesByType, countTypes, countTimeSpend, countTimeSpendInMs, TYPES} from '../utils/stats.js';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-/*const ChartConfiguration = {
-  BAR_HEIGHT: 55,
+const ChartConfiguration = {
   CHART_PADDING_LEFT: 50,
   FONT_SIZE: 13,
   TITLE_FONT_SIZE: 23,
   SCALE_Y_AXES_TICKS_PADDING: 5,
   BAR_THICKNESS: 44,
   MIN_BAR_LENGTH: 50,
-};*/
+};
 
 const renderMoneyChart = (moneyCtx, points) => {
   const arrayLabel = ['🚕 TAXI', '🚌 BUS', '🚂 TRAIN', '🛳 SHIP', '🚗 DRIVE', '✈️ FLIGHT', '🏨 CHECK-IN', '🏛 SIGHTSEEING', '🍴RESTAURANT'];
@@ -46,15 +45,15 @@ const renderMoneyChart = (moneyCtx, points) => {
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
-        minBarLength: 80,
-        barThickness: 44
+        minBarLength: ChartConfiguration.MIN_BAR_LENGTH,
+        barThickness: ChartConfiguration.BAR_THICKNESS,
       }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 13,
+            size: ChartConfiguration.FONT_SIZE,
           },
           color: '#000000',
           anchor: 'end',
@@ -66,15 +65,16 @@ const renderMoneyChart = (moneyCtx, points) => {
         display: true,
         text: 'MONEY',
         fontColor: '#000000',
-        fontSize: 23,
+        fontSize: ChartConfiguration.TITLE_FONT_SIZE,
         position: 'left',
+        padding: ChartConfiguration.CHART_PADDING_LEFT,
       },
       scales: {
         yAxes: [{
           ticks: {
             fontColor: '#000000',
-            padding: 5,
-            fontSize: 13,
+            padding: ChartConfiguration.SCALE_Y_AXES_TICKS_PADDING,
+            fontSize: ChartConfiguration.FONT_SIZE,
           },
           gridLines: {
             display: false,
@@ -131,15 +131,15 @@ const renderTypeChart = (typeCtx, points) => {
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
-        minBarLength: 80,
-        barThickness: 44
+        minBarLength: ChartConfiguration.MIN_BAR_LENGTH,
+        barThickness: ChartConfiguration.BAR_THICKNESS,
       }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 13,
+            size: ChartConfiguration.FONT_SIZE,
           },
           color: '#000000',
           anchor: 'end',
@@ -151,15 +151,16 @@ const renderTypeChart = (typeCtx, points) => {
         display: true,
         text: 'TYPE',
         fontColor: '#000000',
-        fontSize: 23,
+        fontSize: ChartConfiguration.TITLE_FONT_SIZE,
         position: 'left',
+        padding: ChartConfiguration.CHART_PADDING_LEFT,
       },
       scales: {
         yAxes: [{
           ticks: {
             fontColor: '#000000',
-            padding: 5,
-            fontSize: 13,
+            padding: ChartConfiguration.SCALE_Y_AXES_TICKS_PADDING,
+            fontSize: ChartConfiguration.FONT_SIZE,
           },
           gridLines: {
             display: false,
@@ -215,15 +216,15 @@ const renderTimeChart = (timeCtx, points) => {
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
-        minBarLength: 90,
-        barThickness: 44
+        minBarLength: ChartConfiguration.MIN_BAR_LENGTH,
+        barThickness: ChartConfiguration.BAR_THICKNESS,
       }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 13,
+            size: ChartConfiguration.FONT_SIZE,
           },
           color: '#000000',
           anchor: 'end',
@@ -235,15 +236,16 @@ const renderTimeChart = (timeCtx, points) => {
         display: true,
         text: 'TIME',
         fontColor: '#000000',
-        fontSize: 23,
+        fontSize: ChartConfiguration.TITLE_FONT_SIZE,
         position: 'left',
+        padding: ChartConfiguration.CHART_PADDING_LEFT,
       },
       scales: {
         yAxes: [{
           ticks: {
             fontColor: '#000000',
-            padding: 5,
-            fontSize: 13,
+            padding: ChartConfiguration.SCALE_Y_AXES_TICKS_PADDING,
+            fontSize: ChartConfiguration.FONT_SIZE,
           },
           gridLines: {
             display: false,
@@ -301,6 +303,10 @@ export default class StatsView extends SmartView {
     return createStatisticsTemplate(this._data);
   }
 
+  restoreHandlers = () => {
+    this.#setCharts();
+  };
+
   removeElement = () => {
     super.removeElement();
 
@@ -313,15 +319,12 @@ export default class StatsView extends SmartView {
       this.#typeChart.destroy();
       this.#typeChart = null;
     }
+
     if (this.#timeChart) {
       this.#timeChart.destroy();
       this.#timeChart = null;
     }
-  }
-
-  restoreHandlers = () => {
-    this.#setCharts();
-  }
+  };
 
   #setCharts = () => {
     const points = this._data;
@@ -338,6 +341,5 @@ export default class StatsView extends SmartView {
     this.#moneyChart = renderMoneyChart(moneyCtx, points);
     this.#typeChart = renderTypeChart(typeCtx, points);
     this.#timeChart = renderTimeChart(timeCtx, points);
-
-  }
+  };
 }

@@ -5,7 +5,7 @@ import NoTripWaypointsView from '../view/no-trip-waypoints-view.js';
 import PointPresenter from './point-presenter.js';
 import PointNewPresenter from './point-new-presenter.js';
 import {render, RenderPosition, remove} from '../render.js';
-import { sortTaskByDay, sortTaskByDuration, sortTaskByPrice } from '../utils/sort-point.js';
+import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/sort-point.js';
 import {filter} from '../utils/filter.js';
 import {SortType, UpdateType, UserAction, FilterType, State} from '../consts.js';
 

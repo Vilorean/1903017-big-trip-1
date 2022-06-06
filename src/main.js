@@ -7,7 +7,6 @@ import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
 import {MenuItem, RenderPosition} from './consts.js';
 import ApiService from './api-service.js';
-//import TripInfoView from './view/trip-info-view.js';
 
 const AUTHORIZATION = 'Basic mk8w236sl22785i';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
@@ -21,12 +20,9 @@ const apiService = new ApiService(END_POINT, AUTHORIZATION);
 const pointsModel = new PointsModel(apiService);
 const filterModel = new FilterModel();
 
-//render(siteTripMainElement, new TripInfoView().element, RenderPosition.AFTERBEGIN);
-//render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
 const siteMenuComponent = new TripTabsView();
 
 const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel, apiService);
-
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
 let mode = 'TABLE';

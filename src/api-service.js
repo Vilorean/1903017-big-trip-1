@@ -1,9 +1,4 @@
-const Method = {
-  GET: 'GET',
-  PUT: 'PUT',
-  POST: 'POST',
-  DELETE: 'DELETE'
-};
+import {Method} from './consts';
 
 export default class ApiService {
     #endPoint = null;

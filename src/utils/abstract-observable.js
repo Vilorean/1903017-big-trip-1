@@ -13,4 +13,3 @@ export default class AbstractObservable {
       this.#observers.forEach((observer) => observer(event, payload));
     }
 }
-
