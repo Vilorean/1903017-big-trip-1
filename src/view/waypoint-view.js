@@ -1,15 +1,13 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
-import { offersList } from '../utils/offers';
 
 const createWaypointTemplate = (point) => {
-  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, isFavorite: isFavorite, type} = point;
+  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, offers, destination, isFavorite, type} = point;
 
   const destinationName = destination.name;
 
   const dayFrom = dayjs(ISOFrom).format('MMM D');
   const dateFrom = dayjs(ISOFrom).format('YYYY-MM-DD');
-
   const TimeFrom = dayjs(ISOFrom).format('HH:mm');
   const DatetimeFrom = dayjs(ISOFrom).format('YYYY-MM-DDTHH:mm');
 
@@ -31,17 +29,17 @@ const createWaypointTemplate = (point) => {
       };
     };
 
-    const timeDifference = getTimeDifference();
+    const differenceInTime = getTimeDifference();
     const resultArray = [];
 
-    if (timeDifference.days !== 0) {
-      resultArray[0] = `${String(timeDifference.days).padStart(2,'0')}D`;
+    if (differenceInTime.days !== 0) {
+      resultArray[0] = `${String(differenceInTime.days).padStart(2,'0')}D`;
     }
-    if (timeDifference.hours !== 0) {
-      resultArray[1] = `${String(timeDifference.hours).padStart(2,'0')}H`;
+    if (differenceInTime.hours !== 0) {
+      resultArray[1] = `${String(differenceInTime.hours).padStart(2,'0')}H`;
     }
-    if (timeDifference.minutes !== 0) {
-      resultArray[2] = `${String(timeDifference.minutes).padStart(2,'0')}M`;
+    if (differenceInTime.minutes !== 0) {
+      resultArray[2] = `${String(differenceInTime.minutes).padStart(2,'0')}M`;
     }
 
     return resultArray.join(' ');
@@ -51,27 +49,18 @@ const createWaypointTemplate = (point) => {
 
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
-  // ИСПРАВИТЬ, ЧТОБЫ НЕ ОТРИСОВЫВАЛ, НЕВЫБРАННЫЕ ПРЕДЛОЖЕНИЯ!!!
-  const CreateOffers = (pointType, offersByTypes) => {
+  const CreateOffers = (checkedOffers) => {
 
-    const createOfferMarkup = (offer) => `<li class="event__offer">
+    const createOfferMarkup = (offer) => (offer.isChosen ? `<li class="event__offer">
                     <span class="event__offer-title">${offer.title}</span>
                     &plus;&euro;&nbsp;
                     <span class="event__offer-price">${offer.price}</span>
-                  </li>`;
+                    </li>` : '');
 
-    let offersByCurrentType = [];
-
-    for (let i = 0; i < offersByTypes.length; i++) {
-      if (offersByTypes[i].type === pointType) {
-        offersByCurrentType = offersByTypes[i].offers;
-      }
-    }
-
-    return offersByCurrentType.map(createOfferMarkup).join('');
+    return checkedOffers.map(createOfferMarkup).join('');
   };
 
-  const OffersMarkup = CreateOffers(type, offersList());
+  const OffersMarkup = CreateOffers(offers);
 
   return `<li class="trip-events__item">
               <div class="event">
@@ -106,7 +95,7 @@ const createWaypointTemplate = (point) => {
             </li>`;
 };
 
-export default class waypointView extends AbstractView {
+export default class WaypointView extends AbstractView {
   #point = null;
 
   constructor(point) {
@@ -138,4 +127,3 @@ export default class waypointView extends AbstractView {
     this._callback.favoriteClick();
   }
 }
-

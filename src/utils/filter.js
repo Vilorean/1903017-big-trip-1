@@ -1,4 +1,4 @@
-import { FilterType } from './sort-consts';
+import {FilterType} from '../consts';
 
 export const filter = {
   [FilterType.EVERYTHING]: (points) => points.filter((point) => point),

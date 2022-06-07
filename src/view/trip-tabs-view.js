@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import { MenuItem } from '../utils/sort-consts';
+import {MenuItem} from '../consts';
 
 const createTripTabsTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
@@ -16,16 +16,6 @@ export default class TripTabsView extends AbstractView {
   setMenuClickHandler = (callback) => {
     this._callback.menuClick = callback;
     this.element.addEventListener('click', this.#menuClickHandler);
-  }
-
-  setMenuItem = (menuItem) => {
-    const item = this.element.querySelector(`[ data-menu-item=${menuItem}]`);
-
-    if (item !== null) {
-      item.classList.add('trip-tabs__btn--active');
-    } else {
-      item.classList.remove('trip-tabs__btn--active');
-    }
   }
 
   #menuClickHandler = (evt) => {
