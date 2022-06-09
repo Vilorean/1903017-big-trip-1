@@ -4,10 +4,10 @@ import LoadingView from '../view/loading-view.js';
 import NoTripWaypointsView from '../view/no-trip-waypoints-view.js';
 import PointPresenter from './point-presenter.js';
 import PointNewPresenter from './point-new-presenter.js';
-import {render, RenderPosition, remove} from '../render.js';
+import {render, remove} from '../render.js';
 import {sortRoutesByDay, sortRoutesByDuration, sortRoutesByPrice} from '../utils/sort-point.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UpdateType, UserAction, FilterType, State} from '../consts.js';
+import {SortType, UpdateType, UserAction, FilterType, State, RenderPosition} from '../consts.js';
 
 export default class TripPresenter {
   #api = null;
@@ -125,7 +125,7 @@ export default class TripPresenter {
         this.#renderTable();
         break;
       case UpdateType.MAJOR:
-        this.#clearTable( true);
+        this.#clearTable(true);
         this.#renderTable();
         break;
       case UpdateType.INIT:

@@ -1,6 +1,6 @@
 import EventAddView from '../view/event-add-view.js';
-import {UserAction, UpdateType} from '../consts.js';
-import {remove, render, RenderPosition} from '../render.js';
+import {UserAction, UpdateType, RenderPosition} from '../consts.js';
+import {remove, render} from '../render.js';
 
 export default class PointNewPresenter {
     #eventsListContainer = null;

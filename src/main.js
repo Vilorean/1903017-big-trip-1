@@ -3,10 +3,10 @@ import TripTabsView from './view/trip-tabs-view.js';
 import StatsView from './view/stats-view.js';
 import {render, remove} from './render.js';
 import {MenuItem, RenderPosition} from './consts.js';
-import TripPresenter from './presenter/trip-presenter.js';
-import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
+import TripPresenter from './presenter/trip-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 import Api from './api.js';
 
 const AUTHORIZATION = 'Basic mk8w236sl22785i';
@@ -22,10 +22,10 @@ const api = new Api(END_POINT, AUTHORIZATION);
 const pointsModel = new PointsModel(api);
 const filterModel = new FilterModel();
 
-const siteMenuComponent = new TripTabsView();
-
 const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
+
+const siteMenuComponent = new TripTabsView();
 
 let mode = 'TABLE';
 let statisticsComponent = null;
@@ -46,6 +46,7 @@ const handleSiteMenuClick = (menuItem) => {
         });
       }
       break;
+
     case MenuItem.STATS:
       if (mode !== 'STATS') {
         filterPresenter.destroy();

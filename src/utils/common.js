@@ -17,4 +17,4 @@ export const createWaypointTypesMarkup = (offers, chosenPointType) => {
   return offers.map(createTypeMarkup).join('');
 };
 
-export const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB);
+export const datesAreSame = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB);
