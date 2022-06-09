@@ -16,6 +16,7 @@ const createFilterTemplate = (filterItems, currentFilterType) => {
         ${filterItemsTemplate}
         </form>`;
 };
+
 export default class TripFiltersView extends AbstractView {
   #filters = null;
   #currentFilter = null;
@@ -32,10 +33,10 @@ export default class TripFiltersView extends AbstractView {
   setFilterTypeChangeHandler = (callback) => {
     this._callback.filterTypeChange = callback;
     this.element.addEventListener('change', this.#filterTypeChangeHandler);
-  }
+  };
 
   #filterTypeChangeHandler = (evt) => {
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.value);
-  }
+  };
 }

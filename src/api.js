@@ -25,26 +25,49 @@ export default class Api {
     }
 
     updatePoint = async (point) => {
-      const response = await this.#load({
-        url: `points/${point.id}`,
-        method: Method.PUT,
-        body: JSON.stringify(this.#adaptToServer(point)),
-        headers: new Headers({'Content-Type': 'application/json'}),
-      });
+      if (this.checkPoint(point)) {
+        const response = await this.#load({
+          url: `points/${point.id}`,
+          method: Method.PUT,
+          body: JSON.stringify(this.#adaptToServer(point)),
+          headers: new Headers({'Content-Type': 'application/json'}),
+        });
 
-      return await Api.parseResponse(response);
-    }
+        return await Api.parseResponse(response);
+      }
+    };
 
     addPoint = async (point) => {
-      const response = await this.#load({
-        url: 'points',
-        method: Method.POST,
-        body: JSON.stringify(this.#adaptToServer(point)),
-        headers: new Headers({'Content-Type': 'application/json'}),
-      });
+      if (this.checkPoint(point)) {
+        const response = await this.#load({
+          url: 'points',
+          method: Method.POST,
+          body: JSON.stringify(this.#adaptToServer(point)),
+          headers: new Headers({'Content-Type': 'application/json'}),
+        });
 
-      return await Api.parseResponse(response);
-    }
+        return await Api.parseResponse(response);
+      }
+    };
+
+    checkPoint = (point) => {
+      let success = true;
+      if (point.basePrice <= 0 || !Number.isFinite(point.basePrice)) {
+        alert('Цена должна быть положительным числом.');
+        success = false;
+        return success;
+      }
+
+      const dateFrom = new Date(point.dateFrom);
+      const dateTo = new Date(point.dateTo);
+      if (dateFrom.getTime() - dateTo.getTime() > 0) {
+        alert('Время окончания точки маршрута раньше, чем время начала!');
+        success = false;
+        return success;
+      }
+
+      return success;
+    };
 
       deletePoint = async (point) => {
         const response = await this.#load({
@@ -53,7 +76,7 @@ export default class Api {
         });
 
         return response;
-      }
+      };
 
     #load = async ({
       url,
@@ -74,7 +97,7 @@ export default class Api {
       } catch (err) {
         Api.catchError(err);
       }
-    }
+    };
 
     #adaptToServer = (point) => {
       const adaptedPoint = {...point,
@@ -90,7 +113,7 @@ export default class Api {
       delete adaptedPoint.isFavorite;
 
       return adaptedPoint;
-    }
+    };
 
     static parseResponse = (response) => response.json();
 
@@ -98,9 +121,9 @@ export default class Api {
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-    }
+    };
 
     static catchError = (err) => {
       throw err;
-    }
+    };
 }

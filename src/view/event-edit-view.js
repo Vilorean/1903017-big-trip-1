@@ -35,6 +35,7 @@ const createEventEditTemplate = (point, destinations, allOffers) => {
                       </fieldset>
                     </div>
                   </div>
+
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${waypointTypeLabel}
@@ -55,6 +56,7 @@ const createEventEditTemplate = (point, destinations, allOffers) => {
                     <input class="event__input event__input--time event__input-end-time" id="event-end-time-1" type="text"
                     name="event-end-time" value="" ${isDisabled ? 'disabled' : ''}>
                   </div>
+                  
                   <div class="event__field-group  event__field-group--price">
                     <label class="event__label" for="event-price-1">
                       <span class="visually-hidden">Price</span>

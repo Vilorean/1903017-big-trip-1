@@ -43,6 +43,7 @@ const createEventAddTemplate = (point, destinations, allOffers) => {
                       </fieldset>
                     </div>
                   </div>
+                  
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${waypointTypeLabel}

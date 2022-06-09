@@ -1,8 +1,8 @@
 import EventEditView from '../view/event-edit-view.js';
 import WaypointView from '../view/waypoint-view.js';
-import {render, RenderPosition, replace, remove} from '../render.js';
-import {UserAction, UpdateType, Mode, State} from '../consts.js';
-import {isDatesEqual} from '../utils/common.js';
+import {render, replace, remove} from '../render.js';
+import {UserAction, UpdateType, Mode, State, RenderPosition} from '../consts.js';
+import {datesAreSame} from '../utils/common.js';
 
 export default class PointPresenter {
     #eventsListContainer = null;
@@ -102,8 +102,8 @@ export default class PointPresenter {
 
     #handleFormSubmit = (update) => {
       const isMinorUpdate =
-         !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
-         !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+         !datesAreSame(this.#point.dateFrom, update.dateFrom) ||
+         !datesAreSame(this.#point.dateTo, update.dateTo) ||
          (this.#point.basePrice !== update.basePrice);
 
       this.#changeData(

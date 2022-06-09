@@ -1,11 +1,5 @@
 import AbstractView from './view/abstract-view';
-
-export const RenderPosition = {
-  BEFOREBEGIN: 'beforebegin',
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-  AFTEREND: 'afterend',
-};
+import {RenderPosition} from './consts';
 
 export const render = (container, element, place) => {
   const parent = container instanceof AbstractView ? container.element : container;
